@@ -60,19 +60,6 @@ npx astro dev
 
 Add the image to the `public/<IMAGE>` folder. Once you've done that you should be able to access it anywhere via `ft_docs/<BASE>`.
 
-# Compiling Markdoc in Straight JS
-
-```js
-import Markdoc from '@markdoc/markdoc'
-const source = '#Markdoc'
-const ast = Markdoc.parse(source)
-const content = Markdoc.transform(ast)
-const html = Markdoc.renderers.html(content)
-console.log(html)
-```
-
-Then create an astro config file in `/astro.config.mjs`.
-
 # Styled Codeblocks in Markdown
 
 Edit the file `markdoc.config.mjs`.
