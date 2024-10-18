@@ -19,7 +19,7 @@ object {
   width: 80%;
 }
 </style>
-      <object type="image/svg+xml" data="/public/system diagram.svg"></object>
+      <object type="image/svg+xml" data="/ft_docs/public/system diagram.svg"></object>
     </center>
     <h2>Departments</h2>
     <ul>
@@ -33,7 +33,7 @@ object {
     <h2>Tutorials</h2>
     {
 <ul>
-  {codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
+  {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
 </ul>
 }
   </body>
