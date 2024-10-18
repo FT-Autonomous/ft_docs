@@ -7,5 +7,5 @@ import markdoc from '@astrojs/markdoc';
 export default defineConfig({
   integrations: [markdoc()],
   site: 'https://ft-autonomous.github.io',
-  base: 'ft_docs'
+  base: 'ft_docs/'
 });
