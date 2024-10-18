@@ -1,0 +1,16 @@
+---
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+}
+
+const { src, alt, width, height, caption } = Astro.props;
+
+---
+<figure>
+    <img {src} {alt} {width} {height} inferSize={true} />
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>

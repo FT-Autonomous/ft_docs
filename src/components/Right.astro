@@ -1,0 +1,19 @@
+
+<div>
+  <style>
+div  {
+  float: right;
+}
+div :global(figure) {
+  margin-left: 20px;
+  display: table;
+}
+div :global(figcaption) {
+  display: table-caption;
+  caption-side: bottom;
+}
+</style>
+  <div>
+    <slot/>
+  </div>
+</div>

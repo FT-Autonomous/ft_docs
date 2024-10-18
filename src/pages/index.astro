@@ -1,47 +1,30 @@
 ---
 import { getCollection } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
+import Layout from "../layouts/Layout.astro";
 ---
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/ft_docs/favicon.png" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Formula Trinity Autonomous Docs</title>
-  </head>
-  <body>
-    <header>
-      <style>
-      img { height: 1em; }
-      body {
-        color: white;
-        background-color: black;
-      }
-      </style>
-      <h1><img src="/ft_docs/favicon.png"/> Formula Trinity Autonomous Docs</h1>
-    </header>
-    <style>
+<Layout title="Formula Trinity Autonomous Docs">
+  <div style={{paddingLeft: "30px"}}>
+  <style>
       object {
         width: 800px;
       }
       </style>
-    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
-    <h2>Departments</h2>
-    <ul>
-      <li>Perception</li>
-      <li>State Estimation</li>
-      <li>Path Planning</li>
-      <li>Control</li>
-      <li>Hardware</li>
-      <li>Simulation</li>
-    </ul>
-    <h2>Tutorials</h2>
-    {
+  <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
+  <h2>Departments</h2>
+  <ul>
+    <li>Perception</li>
+    <li>State Estimation</li>
+    <li>Path Planning</li>
+    <li>Control</li>
+    <li>Hardware</li>
+    <li>Simulation</li>
+  </ul>
+  <h2>Tutorials</h2>
+  {
 <ul>
   {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
 </ul>
 }
-  </body>
-</html>
+    </div>
+</Layout>

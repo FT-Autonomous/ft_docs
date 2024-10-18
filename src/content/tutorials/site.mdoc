@@ -1,16 +1,23 @@
 ---
-title: Sus
+title: Site Management Information
 ---
 
-# Creating a Docs Site
+## Creating a Docs Site
 
 You may want to corroborate everything you read here with the official Astro bootstrapping docs here: <https://docs.astro.build/en/tutorial/1-setup/2/>.
+
+First, create an empty folder and in it, run:
 
 ```bash
 npm create astro
 ```
 
-This will launch an interactive TUI application for boostrapping an Astro project, much like `create-react-app` if you have ever used React. You'll want to create it in the current directory `./`, use the `empty` template, use `typescript` and specify that you like your typescript `strict` and finally install dependencies. There is no need to run `npm init` or create a `src/` folder as the template above will have already done this for you.
+This will launch an interactive TUI application for boostrapping an Astro project, much like `create-react-app` if you have ever used React.
+{% right %}
+    {% figure src="/ft_docs/npm create astro.png" alt="TUI Interface" width="350" caption="Graphic showing the interactive TUI presented by 'npm create astro'" /%}
+{% /right %}
+
+You'll want to create your Astro project in the current directory (`./`), use the `empty` template, use `typescript` and specify that you like your typescript `strict` and finally install dependencies. There is no need to run `npm init` or create a `src/` folder as the template above will have already done this for you.
 
 AstroJS phones home by default. Remember to disable telemetry via the following command:
 
@@ -24,31 +31,90 @@ Then install and configure the `@astrojs/markdoc` plugin:
 npx astro add markdoc
 ```
 
-Markdoc is documented here: <https://markdoc.dev/docs/getting-started>. It will present a TUI interface which should prompt you as to whether it should add markdoc support to your `astro.config.mjs` file. Allow this. Your `astro.config.mjs` file will look something like the code below:
+This command will present a TUI interface which should prompt you as to whether it should add Markdoc support to your `astro.config.mjs` file. Allow this. Your `astro.config.mjs` file will look something like the code below:
 
 ```js
+// @ts-check
 import { defineConfig } from 'astro/config';
-import markdoc from '@astrojs/markdoc';
-// https://astro.build/config
-export default defineConfig({ integrations: [markdoc()] });
 
+import markdoc from '@astrojs/markdoc';
+
+// https://astro.build/config
+export default defineConfig({
+  integrations: [markdoc()]
+});
+```
+
+You can then start making and presenting content on your docs site. We'll make tutorials on our site. Start by creating a folder to store this content:
+
+```bash
 mkdir -p src/content/tutorials
 ```
 
-Then create a `collection` in  `src/content/tutorials/config.ts` as follows:
+Then create a content "collection" in  `src/content/tutorials/config.ts` as follows:
 
 ```js
 import { defineCollection, z } from 'astro:content';
-const codeCollection = defineCollection({
-    type: 'content',
-    schema: () => z.object({ title: z.string() }),
+const tutorialsCollection = defineCollection({
+  type: 'content',
+  schema: () => z.object({
+    title: z.string()
+  }),
 });
-export const collections = { code: codeCollection };
+export const collections = {
+  tutorials: tutorialsCollection
+};
 ```
 
-A `collection` is a group of articles that can be manipulated in AstroJS code and queried for metadata. You then want to create a markdoc file called `src/content/tutorials/tutorial.mdoc` and some BS in that file (<https://dev.to/askrodney/astro-markdoc-readable-declarative-mdx-alternative-9m>).
+A "collection" in AstroJS is a group of articles that can be manipulated in AstroJS code and queried for metadata. You then want to create a Markdoc file called `src/content/tutorials/tutorial.mdoc` and some BS in that file (<https://dev.to/askrodney/astro-markdoc-readable-declarative-mdx-alternative-9m>).
 
-Finally `edit src/pages/[...slug].ts` and add a layout there according to this guide: <https://dev.to/askrodney/astro-markdoc-readable-declarative-mdx-alternative-9m>.
+Once you have created the collection, you can add Markdoc files to the folder that defines the collection. The file extension for markdoc files is `.mdoc` so we'll add a file called `src/content/tutorials/tutorial.mdoc`. Add the following contents to that file:
+
+```mdx
+---
+title: A Sample Tutorial
+---
+
+## A Sample Tutorial
+
+Hello here.
+```
+
+The content at the top of this file is essentially YAML formatted metadata which is accessible on collection entities.
+
+We want to reference our tutorials collection from the main site. Edit `src/pages/index.astro` and add the following content:
+
+```astro
+---
+import { getCollection } from 'astro:content';
+const tutorialsEntries = await getCollection('tutorials');
+import Layout from "../layouts/Layout.astro";
+---
+<h1>Astro</h1>
+<ul>
+  {tutorialsEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+</ul>
+```
+
+Finally, we need to create a generic file that intercepts requests to URIs other than the index. Create the file `src/pages/[...slug].astro` and add the following code:
+
+```js
+---
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const tutorialsEntries = await getCollection('tutorials');
+  return tutorialsEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+const { data: { title } } = entry;
+const { Content } = await entry.render();
+---
+<h1>Astro</h1>
+<Content />
+```
 
 Once everything is set up, you will mostly be doing front end yak shaving with the dev server running for hot reloading. To start the dev server, run:
 
@@ -56,11 +122,73 @@ Once everything is set up, you will mostly be doing front end yak shaving with t
 npx astro dev
 ```
 
-# Adding Images
+### Setting up Image Support
+
+You need to do this manually 💀 by following this guide: <https://docs.astro.build/en/guides/integrations-guide/markdoc/#create-a-custom-markdoc-image-tag>. I will summarise it here.
+
+In your `markdoc.config.mjs` file, you want to define a new tag as follows:
+
+```js
+import { component, defineMarkdocConfig, nodes } from '@astrojs/markdoc/config';
+
+export default defineMarkdocConfig({
+  tags: {
+    image: {
+      attributes: {
+        ...nodes.image.attributes,
+        width: { type: String, required: false },
+        height: { type: String, required: false },
+        caption: { type: String, required: false }
+      },
+      render: component('./src/components/Figure.astro'),
+    },
+  },
+});
+```
+
+For the figure itself, you want to make a component in `src/components/Figure.astro` as follows:
+
+```astro
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+}
+
+const { src, alt, width, height, caption } = Astro.props;
+---
+<figure>
+    <image {src} {alt} {width} {height}  />
+    {caption && <figcaption>{caption}</figcaption>}
+</figure>
+```
+
+From then on, you can just use the following in Markdoc code to include images:
+
+```mdx
+{\% figure src="./astro-logo.png" alt="Astro Logo" width="100" height="100" %\}
+```
+
+### Managing Floats
+
+Check `Right.astro` in the GitHub if you are curious (do not reccomend).
+
+## Markdoc Quirks
+
+Markdoc is documented here: <https://markdoc.dev/docs/getting-started>. 
+
+## Adding Images
 
 Add the image to the `public/<IMAGE>` folder. Once you've done that you should be able to access it anywhere via `ft_docs/<BASE>`.
 
-# Styled Codeblocks in Markdown
+Use the 
+
+## Styled Codeblocks in Markdown
 
 Edit the file `markdoc.config.mjs`.
 
@@ -68,42 +196,13 @@ Edit the file `markdoc.config.mjs`.
 import { defineMarkdocConfig } from '@astrojs/markdoc/config';
 import shiki from '@astrojs/markdoc/shiki';
 export default defineMarkdocConfig({
-    extends: [
-        shiki({ theme: 'one-dark-pro' }),
-    ],
+    extends: [ shiki({ theme: 'one-dark-pro' })  ],
 });
 ```
 
-# Example Markdoc File
+## Configuring Your Editor for AstroJS development
 
-```mdx
----
-title: 'Second Post Again'
-description: 'Lorem ipsum dolor sit amet'
-pubDate: 'Jul 08 2022'
-heroImage: '/blog-placeholder-3.jpg'
----
-
-# {% $frontmatter.title %}
-
-![Vincent Van Gogh’s Starry Night](https://upload.wikimedia.org/wikipedia/commons/0/05/Cow-bw.JPG)
-
-## 🖥️ Fenced Code Block Examples
-
-### CSS
-
-Here's a paragraph
-
-\`\`\`css
-.box { border: solid 5px red; }
-\`\`\`
-```
-
-- Some list here
-
-# Configuring Your Editor for AstroJS
-
-## Emacs
+### Emacs {% image src="https://www.emacswiki.org/pics/static/CarbonEmacsPackageIcon.png" alt="Emacs Logo" height="1em" /%}
 
 I'm using Emacs so I had to install the following treesitter grammars to get things working:
 
@@ -114,18 +213,51 @@ I'm using Emacs so I had to install the following treesitter grammars to get thi
  )
 ```
 
--   <https://github.com/virchau13/tree-sitter-astro>
--   <https://github.com/tree-sitter/tree-sitter-css>
--   <https://github.com/tree-sitter/tree-sitter-html>
--   <https://github.com/tree-sitter/tree-sitter-typescript>
+- <https://github.com/virchau13/tree-sitter-astro>
+- <https://github.com/tree-sitter/tree-sitter-css>
+- <https://github.com/tree-sitter/tree-sitter-html>
+- <https://github.com/tree-sitter/tree-sitter-typescript>
 
-# Styling in Astro
+## Styling in Astro
 
 Use scoped style attributes. Styling in general is documented here: <https://docs.astro.build/en/guides/styling/>.
 
-# Deploying to GitHub Pages
+## Deploying to GitHub Pages
 
 Follow this guide: <https://docs.astro.build/en/guides/deploy/github/>.
 
-# Reducing HTML boilerplate using layouts
+## Reducing HTML boilerplate using AstroJS layouts
 
+For a first layout, you generally just want something to automate title insertion and creating html, head and body tags. For this, create a file called `src/layouts/Layout.astro` and enter the following:
+
+```astro
+---
+const { title } = Astro.props;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/ft_docs/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot/>
+  </body>
+</html>
+```
+
+Once you have a layout, it is pretty easy to use. Just go into any of you pages and do something like:
+
+```astro
+---
+import Layout from "../layouts/Layout.astro"
+---
+<Layout title="A templated page">
+    Hello world!
+</Layout>
+```
+
+
+You can read more about AstroJS layouts here: <https://docs.astro.build/en/basics/layouts/>.

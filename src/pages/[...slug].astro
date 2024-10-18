@@ -13,32 +13,10 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { description, title } = data;
 const { Content } = await entry.render();
+import Layout from "../layouts/Layout.astro";
 ---
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/ft_docs/favicon.png" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    
-    <header>
-      <style>
-      img { height: 1em; }
-      body {
-        color: white;
-        background-color: black;
-      }
-      </style>
-      <h1><img src="/ft_docs/favicon.png"/> Formula Trinity Autonomous Docs</h1>
-    </header>
-    {
-<div style={{paddingLeft: "30px"}}>
-  <Content />
-</div>
-}
-  </body>
-</html>
+<Layout title={title}>
+  <div style={{paddingLeft: "30px"}}>
+    <Content />
+  </div>
+</Layout>
