@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@astrojs/markdoc": "^0.11.5",
     "@markdoc/markdoc": "^0.4.0",
     "markdoc": "^0.1.3"
   },
