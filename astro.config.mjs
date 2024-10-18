@@ -6,5 +6,6 @@ import markdoc from '@astrojs/markdoc';
 // https://astro.build/config
 export default defineConfig({
   integrations: [markdoc()],
-  site: 'https://ft-autonomous.github.io'
+  site: 'https://ft-autonomous.github.io',
+  base: 'ft_docs'
 });
