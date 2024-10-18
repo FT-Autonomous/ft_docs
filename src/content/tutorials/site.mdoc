@@ -133,7 +133,7 @@ import { component, defineMarkdocConfig, nodes } from '@astrojs/markdoc/config';
 
 export default defineMarkdocConfig({
   tags: {
-    image: {
+    figure: {
       attributes: {
         ...nodes.image.attributes,
         width: { type: String, required: false },
@@ -176,7 +176,7 @@ From then on, you can just use the following in Markdoc code to include images:
 
 ### Managing Floats
 
-Check `Right.astro` in the GitHub if you are curious (do not reccomend).
+Check `src/components/Right.astro` in the GitHub if you are curious (do not reccomend).
 
 ## Markdoc Quirks
 

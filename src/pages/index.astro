@@ -10,7 +10,7 @@ import Layout from "../layouts/Layout.astro";
         width: 600px;
       }
       </style>
-  <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
+    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
     <h2>Departments</h2>
   <ul>
     <li>Perception</li>
@@ -20,7 +20,7 @@ import Layout from "../layouts/Layout.astro";
     <li>Hardware</li>
     <li>Simulation</li>
   </ul>
-  <h2>Tutorials</h2>
+  <h2>Guides and Tutorials</h2>
   {
 <ul>
   {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
