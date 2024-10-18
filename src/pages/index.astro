@@ -12,15 +12,22 @@ const codeEntries = await getCollection('tutorials');
     <title>Formula Trinity Autonomous Docs</title>
   </head>
   <body>
-    <h1>Astro</h1>
-    <center>
+    <header>
       <style>
-object {
-  width: 80%;
-}
-</style>
-      <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
-    </center>
+      img { height: 1em; }
+      body {
+        color: white;
+        background-color: black;
+      }
+      </style>
+      <h1><img src="/ft_docs/favicon.png"/> Formula Trinity Autonomous Docs</h1>
+    </header>
+    <style>
+      object {
+        width: 800px;
+      }
+      </style>
+    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
     <h2>Departments</h2>
     <ul>
       <li>Perception</li>

@@ -21,10 +21,20 @@ const { Content } = await entry.render();
     <link rel="icon" type="image/svg+xml" href="/ft_docs/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>FTA Documentation</title>
+    <title>{title}</title>
   </head>
   <body>
-    <h1>FTA Documentation</h1>
+    
+    <header>
+      <style>
+      img { height: 1em; }
+      body {
+        color: white;
+        background-color: black;
+      }
+      </style>
+      <h1><img src="/ft_docs/favicon.png"/> Formula Trinity Autonomous Docs</h1>
+    </header>
     {
 <div style={{paddingLeft: "30px"}}>
   <Content />

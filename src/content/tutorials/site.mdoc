@@ -1,0 +1,144 @@
+---
+title: Sus
+---
+
+# Creating a Docs Site
+
+You may want to corroborate everything you read here with the official Astro bootstrapping docs here: <https://docs.astro.build/en/tutorial/1-setup/2/>.
+
+```bash
+npm create astro
+```
+
+This will launch an interactive TUI application for boostrapping an Astro project, much like `create-react-app` if you have ever used React. You'll want to create it in the current directory `./`, use the `empty` template, use `typescript` and specify that you like your typescript `strict` and finally install dependencies. There is no need to run `npm init` or create a `src/` folder as the template above will have already done this for you.
+
+AstroJS phones home by default. Remember to disable telemetry via the following command:
+
+```bash
+npx astro telemetry disable
+```
+
+Then install and configure the `@astrojs/markdoc` plugin:
+
+```bash
+npx astro add markdoc
+```
+
+Markdoc is documented here: <https://markdoc.dev/docs/getting-started>. It will present a TUI interface which should prompt you as to whether it should add markdoc support to your `astro.config.mjs` file. Allow this. Your `astro.config.mjs` file will look something like the code below:
+
+```js
+import { defineConfig } from 'astro/config';
+import markdoc from '@astrojs/markdoc';
+// https://astro.build/config
+export default defineConfig({ integrations: [markdoc()] });
+
+mkdir -p src/content/tutorials
+```
+
+Then create a `collection` in  `src/content/tutorials/config.ts` as follows:
+
+```js
+import { defineCollection, z } from 'astro:content';
+const codeCollection = defineCollection({
+    type: 'content',
+    schema: () => z.object({ title: z.string() }),
+});
+export const collections = { code: codeCollection };
+```
+
+A `collection` is a group of articles that can be manipulated in AstroJS code and queried for metadata. You then want to create a markdoc file called `src/content/tutorials/tutorial.mdoc` and some BS in that file (<https://dev.to/askrodney/astro-markdoc-readable-declarative-mdx-alternative-9m>).
+
+Finally `edit src/pages/[...slug].ts` and add a layout there according to this guide: <https://dev.to/askrodney/astro-markdoc-readable-declarative-mdx-alternative-9m>.
+
+Once everything is set up, you will mostly be doing front end yak shaving with the dev server running for hot reloading. To start the dev server, run:
+
+```bash
+npx astro dev
+```
+
+# Adding Images
+
+Add the image to the `public/<IMAGE>` folder. Once you've done that you should be able to access it anywhere via `ft_docs/<BASE>`.
+
+# Compiling Markdoc in Straight JS
+
+```js
+import Markdoc from '@markdoc/markdoc'
+const source = '#Markdoc'
+const ast = Markdoc.parse(source)
+const content = Markdoc.transform(ast)
+const html = Markdoc.renderers.html(content)
+console.log(html)
+```
+
+Then create an astro config file in `/astro.config.mjs`.
+
+# Styled Codeblocks in Markdown
+
+Edit the file `markdoc.config.mjs`.
+
+```js
+import { defineMarkdocConfig } from '@astrojs/markdoc/config';
+import shiki from '@astrojs/markdoc/shiki';
+export default defineMarkdocConfig({
+    extends: [
+        shiki({ theme: 'one-dark-pro' }),
+    ],
+});
+```
+
+# Example Markdoc File
+
+```mdx
+---
+title: 'Second Post Again'
+description: 'Lorem ipsum dolor sit amet'
+pubDate: 'Jul 08 2022'
+heroImage: '/blog-placeholder-3.jpg'
+---
+
+# {% $frontmatter.title %}
+
+![Vincent Van Gogh’s Starry Night](https://upload.wikimedia.org/wikipedia/commons/0/05/Cow-bw.JPG)
+
+## 🖥️ Fenced Code Block Examples
+
+### CSS
+
+Here's a paragraph
+
+\`\`\`css
+.box { border: solid 5px red; }
+\`\`\`
+```
+
+- Some list here
+
+# Configuring Your Editor for AstroJS
+
+## Emacs
+
+I'm using Emacs so I had to install the following treesitter grammars to get things working:
+
+```elisp
+(setq treesit-language-source-alist
+ '((astro "https://github.com/virchau13/tree-sitter-astro"))
+ ;; … other treesitter grammars here
+ )
+```
+
+-   <https://github.com/virchau13/tree-sitter-astro>
+-   <https://github.com/tree-sitter/tree-sitter-css>
+-   <https://github.com/tree-sitter/tree-sitter-html>
+-   <https://github.com/tree-sitter/tree-sitter-typescript>
+
+# Styling in Astro
+
+Use scoped style attributes. Styling in general is documented here: <https://docs.astro.build/en/guides/styling/>.
+
+# Deploying to GitHub Pages
+
+Follow this guide: <https://docs.astro.build/en/guides/deploy/github/>.
+
+# Reducing HTML boilerplate using layouts
+
