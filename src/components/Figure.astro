@@ -11,6 +11,6 @@ const { src, alt, width, height, caption } = Astro.props;
 
 ---
 <figure>
-    <img {src} {alt} {width} {height} inferSize={true} />
+    <img {src} {alt} {width} {height} />
     {caption && <figcaption>{caption}</figcaption>}
 </figure>
