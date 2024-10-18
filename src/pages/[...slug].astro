@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '~layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const codeEntries = await getCollection('tutorials');
@@ -11,7 +10,6 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { href: url } = Astro.url;
 const { data } = entry;
 const { description, title } = data;
 const { Content } = await entry.render();
