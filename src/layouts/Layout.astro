@@ -1,5 +1,7 @@
 ---
 const { title } = Astro.props;
+const backgroundColor = "#1B0000";
+const foregroundColor = "#FFFFFF"
 ---
 
 <html lang="en">
@@ -11,33 +13,50 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <style>
+    <style define:vars={{ backgroundColor }}>
       :global(pre) {
         padding: 10px;
-        box-shadow: inset black 0px 0px 5px 5px;
+        box-shadow: inset var(--backgroundColor) 0px 0px 5px 5px;
       }
     </style>
     <header>
-      <style>
+      <style define:vars={{ backgroundColor, foregroundColor }}>
       img {
         height: 1em;
       }
-      body {
-        color: white;
-        background-color: black;
+      :global(a) {
+        color: red;
       }
+      :global(a:visited) {
+
+        color: maroon;
+      }
+      body {
+        color: var(--foregroundColor);
+        background-color: var(--backgroundColor);
+        /* Copied from docs.evervault.com */
+        font-family: Roobert,Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      }
+
+      h1 a {
+        /* https://stackoverflow.com/questions/8919682/remove-all-styling-formatting-from-hyperlinks */
+        color: inherit;
+        text-decoration: none;
+      }
+      
       h1 {
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 0.5em;
       }
 
       </style>
       <h1>
         <span>
-          Formula Trinity Autonomous Docs
+          <a href="/ft_docs/">Formula Trinity Autonomous Documentation</a>
         </span>
-          <img src="/ft_docs/favicon.png"/>
+        <a href="/ft_docs/"><img src="/ft_docs/favicon.png"/></a>
       </h1>
     </header>
     <slot/>

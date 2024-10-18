@@ -25,6 +25,6 @@ export default defineMarkdocConfig({
     },
   },
   extends: [
-    shiki({ theme: 'one-dark-pro' }),
+    shiki({ theme: 'red' }),
   ],
 });

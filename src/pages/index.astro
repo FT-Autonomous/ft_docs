@@ -7,11 +7,11 @@ import Layout from "../layouts/Layout.astro";
   <div style={{paddingLeft: "30px"}}>
   <style>
       object {
-        width: 800px;
+        width: 600px;
       }
       </style>
   <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
-  <h2>Departments</h2>
+    <h2>Departments</h2>
   <ul>
     <li>Perception</li>
     <li>State Estimation</li>
@@ -26,5 +26,9 @@ import Layout from "../layouts/Layout.astro";
   {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
 </ul>
 }
+    <h2>Misc</h2>
+    <ul>
+      <li>Torque and Shit</li>
+    </ul>
     </div>
 </Layout>
