@@ -18,13 +18,12 @@ const collection = await [
   ...await getCollection('tutorials')
 ];
 
-const entry = config.output === "static"
+let entry = config.output === "static"
   ? Astro.props.entry
   : collection.find(entry => entry.slug == Astro.params.slug);
 
-const { data } = entry;
-const { description, title } = data;
-const { Content } = await entry.render();
+const { data: { description, title } } = entry ?? { data: { description: 'Not Found', title: 'Not Found' } };
+const { Content } = entry !== undefined ? await entry.render() : { Content : '' };
 import Layout from "../layouts/Layout.astro";
 ---
 <Layout title={title}>
