@@ -1,9 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
+const departmentEntries = await getCollection('departments');
 import Layout from "../layouts/Layout.astro";
 ---
-<Layout title="Formula Trinity Autonomous Docs">
+<Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
+  <style>
+  ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+ul li {
+  background: linear-gradient(90deg, #350000 0%, #350000 30%, var(--backgroundColor) 100%);
+}
+ul li:nth-child(odd) {
+  background: linear-gradient(90deg, #2E0000 0%, #2E0000 30%, var(--backgroundColor) 100%);
+}
+  </style>
   <div style={{paddingLeft: "30px"}}>
   <style>
       object {
@@ -14,7 +27,7 @@ import Layout from "../layouts/Layout.astro";
     <h2>Departments</h2>
   <ul>
     <li>Perception</li>
-    <li>State Estimation</li>
+    {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
     <li>Path Planning</li>
     <li>Control</li>
     <li>Hardware</li>
@@ -30,5 +43,6 @@ import Layout from "../layouts/Layout.astro";
     <ul>
       <li>Stuff here …</li>
     </ul>
+  </div>
     </div>
 </Layout>

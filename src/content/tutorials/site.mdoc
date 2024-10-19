@@ -92,7 +92,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 <h1>Astro</h1>
 <ul>
-  {tutorialsEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+  {tutorialsEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}>{e.data.title}</a></li>))}
 </ul>
 ```
 
@@ -263,3 +263,165 @@ import Layout from "../layouts/Layout.astro"
 
 
 You can read more about AstroJS layouts here: <https://docs.astro.build/en/basics/layouts/>.
+
+## Adding Access Control with {% image src="https://clerk.com/v2/downloads/clerk-logo-white.png" height="1em" /%}
+
+This is where the SaaS goblins catch you out. On GitHub pages, access control is an Enterprise only feature, so if you want to have any sensitive data on there, you're SoL! You really ought to find some kind of server and a means of making that server visible on the public internet (with a combintation of [pinggy](https://pinggy.io/) and [cloudflare](https://cloudflare.com/) you can orchestrate a dynamic DNS set up to make any device with outbound access to the internet visible on the through a DNS name proxied through cloudflare).
+
+Once you have a server, you can pick any auth provider really. I picked [Clerk](https://clerk.com/) as I had some bad experiences with [Auth0](https://auth0.com/) at Evervault.
+
+You're going to want to install the clerk astro plugin:
+
+```bash
+npm install @astrojs/node @clerk/astro
+```
+
+You may want to add the following to `src/env.d.ts` once that is done:
+
+```tsx
+/// <reference types="astro/client" />
+/// <reference types="@clerk/astro/env" />
+```
+
+The clerk onboarding process should provide you with environment variables which you should make available through whatever means is desireable to you (dotenv .etc).
+
+```
+PUBLIC_CLERK_PUBLISHABLE_KEY=…
+CLERK_SECRET_KEY=…
+```
+
+You then want to add clerk to your `astro.config.mjs` (Cleark doesn't do this automatically like Markdoc did). You're config file should look something like this afterwards:
+
+```tsx
+import { defineConfig } from "astro/config";
+import node from "@astrojs/node";
+import clerk from "@clerk/astro";
+
+export default defineConfig({
+  integrations: [clerk()],
+  adapter: node({ mode: "standalone" }),
+  output: "server",
+});
+```
+
+You then need to add the clerk middleware in a `src/middleware.ts` file:
+
+```tsx
+import { clerkMiddleware } from "@clerk/astro/server";
+
+export const onRequest = clerkMiddleware();
+```
+
+### Migrating to Dynamic Routing
+
+For Clerk to work, we need to use some server side rendering. There's a guide for doing this here: <https://docs.astro.build/en/guides/routing/>. I will summarise it below. Add the following entry to `astro.config.mjs`.
+
+```js
+defineConfig({ 
+    // … other config above
+   output: 'server';
+})
+```
+
+Once we do that, we get some complaints as the `tutorial` collection prior to this was focused on static sites:
+
+```
+getStaticPaths() ignored in dynamic page /src/pages/[...slug].astro. Add
+`export const prerender = true;` to prerender the page as static HTML
+during the build process.
+```
+
+We don't want to do prerenders as we actually do want dynamic behaviour. Navigate to any of your static pages in `src/pages/…` and make remove the existing static dispatch logic:
+
+```astro
+---
+export async function getStaticPaths() {
+  const codeEntries = await getCollection('tutorials');
+  const departmentEntries = await getCollection('departments');
+  return [...codeEntries, ...departmentEntries].map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+// … rest of code with the entry
+---
+```
+
+Replace that logic with this dynamic dispatch:
+
+```astro
+---
+const { slug } = Astro.params;
+const collection = [
+  ...await getCollection('departments'),
+  ...await getCollection('tutorials')
+]
+const entry = collection.find(entry => entry.slug == slug);
+// … rest of code with the entry
+---
+```
+
+### Access Control
+
+I reccomend  putting the access control logic in the layout layer. To add componetns for access control, edit `src/layouts/Layout.astro` and enter the following in the header.
+
+```astro
+---
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/astro/components";
+---
+```
+
+We then want to replace our direct usage of `<slot/>` with logic that only presents the slot if the user has logged in, something like:
+
+```astro
+<SignedIn>
+    <UserProfile afterSignOutUrl="…"/>
+    <slot/>
+</SignedIn>
+<SignedOut>
+   <SignInButton
+       forceRedirectUrl="…"
+       fallbackRedirectUrl="…"
+       mode="modal"/>
+</SignedOut>
+```
+
+### More Clerk Configuration
+
+In the Clerk dashboard, you want to disable account creation and have it set to be invite-only.
+
+{% figure src="Signin restrictions in clerk.png" height="250px" /%}
+
+### Styling Clerk
+
+Styling Clerk is documented here: <https://clerk.com/docs/customization/themes#dark-theme>. A summary is to first install the themes package:
+
+```bash
+npm install @clerk/themes
+```
+
+Then add the theme to `astro.config.mjs`
+
+```astro
+---
+import { dark } from '@clerk/themes'
+---
+// other code …
+defineConfig({
+    integrations: [
+        clerk({ appearance: { baseTheme: dark } })
+   ]
+})
+    
+```
+
+### Troubleshooting
+
+```
+Clerk: Refreshing the session token resulted in an infinite redirect loop.
+This usually means that your Clerk instance keys do not match - make sure
+to copy the correct publishable and secret keys from the Clerk dashboard.
+```
+
+This error is often caused by bad cookies. Just clear your cookies for `clerk.com` and everything should start working again.

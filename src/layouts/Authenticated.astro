@@ -1,0 +1,24 @@
+---
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/astro/components";
+---
+<SignedIn>
+  <slot/>
+</SignedIn>
+<SignedOut>
+  <center>
+    <style>
+      :global(button) {
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      </style>
+    <p>We keep our secrets</p>
+    <SignInButton
+      forceRedirectUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`}
+      fallbackRedirectUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`}
+      mode="modal"
+    />
+  </center>
+</SignedOut>

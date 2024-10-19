@@ -1,23 +1,35 @@
 ---
 import { getCollection } from 'astro:content';
+import config from "../../astro.config.mjs";
 
 export async function getStaticPaths() {
-  const codeEntries = await getCollection('tutorials');
-  return codeEntries.map((entry) => ({
+  const collection =  [
+    ...await getCollection('departments'),
+    ...await getCollection('tutorials')
+  ];
+  return collection.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
 }
 
-const { entry } = Astro.props;
+const collection = await [
+  ...await getCollection('departments'),
+  ...await getCollection('tutorials')
+];
+
+const entry = config.output === "static"
+  ? Astro.props.entry
+  : collection.find(entry => entry.slug == Astro.params.slug);
+
 const { data } = entry;
 const { description, title } = data;
 const { Content } = await entry.render();
 import Layout from "../layouts/Layout.astro";
 ---
 <Layout title={title}>
-  <div style={{paddingLeft: "30px"}}>
+  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
     <Content />
   </div>
-  <a href="/ft_docs/">Back</a>
+  <footer><a href="/ft_docs/">Root</a></footer>
 </Layout>

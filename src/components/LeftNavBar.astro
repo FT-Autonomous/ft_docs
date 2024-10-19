@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+const codeEntries = await getCollection('tutorials');
+const departmentEntries = await getCollection('departments');
+---
+<style>
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+ul li {
+  background: linear-gradient(90deg, #350000 0%, #350000 75%, var(--backgroundColor) 100%);
+}
+ul li:nth-child(odd) {
+  background: linear-gradient(90deg, #2E0000 0%, #2E0000 75%, var(--backgroundColor) 100%);
+}
+</style>
+<h2>Departments</h2>
+<ul>
+  <li>Perception</li>
+  {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}>{e.data.title}</a></li>))}
+  <li>Path Planning</li>
+  <li>Control</li>
+  <li>Hardware</li>
+  <li>Simulation</li>
+</ul>
+<h2>Guides and Tutorials</h2>
+<ul>
+  {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+</ul>

@@ -1,9 +1,20 @@
 ---
-const { title } = Astro.props;
-const backgroundColor = "#1B0000";
-const foregroundColor = "#FFFFFF"
----
+import { UserButton } from "@clerk/astro/components";
+import LeftNavBar from "../components/LeftNavBar.astro";
+import Authenticated from "./Authenticated.astro";
+import Identity from "./Identity.astro";
 
+const { title, includeNavBar } = Astro.props;
+
+
+const AuthBarrier = process.env.FT_DOCS_FORCE_AUTH == "1"
+  ? Authenticated
+  : Identity;
+
+const backgroundColor = "#1F0000";
+const foregroundColor = "#FFF";
+const secondaryBackgroundColor = "#FFAAAA";
+---
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -13,48 +24,68 @@ const foregroundColor = "#FFFFFF"
     <title>{title}</title>
   </head>
   <body>
-    <style define:vars={{ backgroundColor }}>
+    <style define:vars={{ backgroundColor, secondaryBackgroundColor }}>
       @import url(https://cdn.xeiaso.net/static/css/iosevka/family.css);
       :global(pre) {
         padding: 10px;
         box-shadow: inset var(--backgroundColor) 0px 0px 5px 5px;
       }
+      .two-panel-layout {
+        display: flex;
+        flex-direction: row;
+      }
+      .left {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-right: 10px;
+        border-right: 1px solid white;
+      }
+      
       </style>
     <header>
-      <style define:vars={{ backgroundColor, foregroundColor }}>
-      img {
-        height: 1em;
-      }
-      :global(a) {
-        color: red;
-      }
-      :global(a:visited) {
-
-        color: maroon;
-      }
+      <style define:vars={{ backgroundColor, foregroundColor, secondaryBackgroundColor }}>
+      :global(a) { color: red; text-decoration: none; }
+      :global(a:visited) { color: #950000; } /* basically maroon */
+      :global(a:hover) { text-decoration: underline }
+      :global(a:hover:visited) { color: #B71020; }
+      :global(a:hover) { color: #FF1030; }
+      
       body {
         color: var(--foregroundColor);
         background-color: var(--backgroundColor);
         /* Copied from docs.evervault.com */
         /* font-family: Roobert,Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; */
       }
-
-      /* Copied from https://xeiaso.net/blog/iaso-fonts/ */
-      :global(body) {
-        font-family: "Iosevka Aile Iaso", sans-serif;
+/*
+      body {
+        font-family: Iosevka Aile Iaso,sans-serif;
       }
 
-      /* Copied from https://xeiaso.net/blog/iaso-fonts/ */
       :global(code, pre) {
-        font-family: "Iosevka Curly Iaso", monospace;
+        font-family: Iosevka Curly Iaso,monospace;
         font-size: 14px;
       }
 
-      /* Copied from https://xeiaso.net/blog/iaso-fonts/ */
       :global(h1, h2, h3, h4, h5, h6) {
-        font-family: "Iosevka Etoile Iaso", serif;
+        font-family: Iosevka Etoile Iaso,serif
+      }*/
+
+      header {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5x;
+        margin: 10px;
+        border-bottom: 1px solid var(--foregroundColor);
+        margin-bottom: 20px;
       }
 
+      :global(footer) {
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        margin: 10px;
+        border-top: 1px solid var(--foregroundColor);
+      }
 
       h1 a {
         /* https://stackoverflow.com/questions/8919682/remove-all-styling-formatting-from-hyperlinks */
@@ -69,14 +100,23 @@ const foregroundColor = "#FFFFFF"
         gap: 0.5em;
       }
 
+      :global(h1,h2,h3) { font-weight: 300; }
+      
       </style>
       <h1>
         <span>
-          <a href="/ft_docs/">Formula Trinity Autonomous Documentation</a>
+          <a href="/ft_docs/">Formula Trinity Autonomous Wiki</a>
         </span>
-        <a href="/ft_docs/"><img src="/ft_docs/favicon.png"/></a>
+        <a href="/ft_docs/"><img style={{ height: "1em" }} src="/ft_docs/favicon.png"/>{" "}<UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
       </h1>
     </header>
-    <slot/>
+    <AuthBarrier>
+      <div class="two-panel-layout">
+        {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
+      <div>
+        <slot/>
+        </div>
+      </div>
+    </AuthBarrier>
   </body>
 </html>
