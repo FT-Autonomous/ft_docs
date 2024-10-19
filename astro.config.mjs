@@ -21,12 +21,14 @@ export default defineConfig({
   base: '/ft_docs',
   output: 'static',
   trailingSlash: 'ignore',
-  build: {
+  vite: {
+    build: {
       rollupOptions: {
         external: [
           // https://stackoverflow.com/questions/71552229/vite-how-do-i-use-a-wildcard-in-rollupjs-build-rollupoptions-external
           "fsevents"
         ]
       }
+    }
   }
 });
