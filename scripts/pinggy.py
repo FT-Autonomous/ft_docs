@@ -3,8 +3,8 @@
 # Dynamic DNS configuration for docs site
 
 from os import environ
-from socket import gethostname
-from subprocess import PIPE, run, Popen
+from typing import Tuple
+from subprocess import PIPE, run
 from argparse import ArgumentParser
 from random import random
 from time import sleep
@@ -12,13 +12,11 @@ from re import search
 from requests import put, patch
 from os import environ
 
-# This is an API token with the necessary permissions. TODO: include
-# permissions needed.
+# This is an API token with the necessary permissions. TODO: include permissions needed.
 cloudflare_api_token         = environ["CLOUDFLARE_API_TOKEN"]
 # This is the ID of your cloudflare zone, get this from the zone overview.
 cloudflare_zone_id           = environ["CLOUDFLARE_ZONE_ID"]
-# This is the ID of the DNS record you're creating. Get it via inspect
-# element or the API.
+# This is the ID of the DNS record you're creating. Get it via inspect element or the API.
 cloudflare_target_dns_record = environ["CLOUDFLARE_TARGET_DNS_RECORD"]
 # The origin ruleset.
 cloudflare_ruleset_id        = environ["CLOUDFLARE_RULESET_ID"]
@@ -27,7 +25,7 @@ cloudflare_rule_id           = environ["CLOUDFLARE_RULE_ID"]
 
 # Convert all of this code to use libtmux later: https://github.com/tmux-python/libtmux
 
-def initiate(session_name: str, host_port=7733):
+def initiate(session_name: str, host_port: int):
     """
     Launch a tmux session in the background with a pinggy client
     """
@@ -36,17 +34,19 @@ def initiate(session_name: str, host_port=7733):
     result = run(command)
     print(result)
 
-def probe(session_name: str):
+def probe(session_name: str) -> Tuple[str, int]:
     command = ["tmux", "capture-pane", "-t", session_name, "-p"]
     output = run(command, stdout=PIPE).stdout.decode().replace("\n", "")
-    host, port = search(r'tcp://(.{0,80}\.pinggy\.link):([0-9]{0,5})', output).groups()
-    print(host, port)
-    return host, port
+    matcher = search(r'tcp://(.{0,80}\.pinggy\.link):([0-9]{0,5})', output)
+    if matcher is None:
+        raise RuntimeError("Could not find pinggy URL. Maybe the connection failed?")
+    host, port = matcher.groups()
+    print(f"host: {host}, port: {port}")
+    return host, int(port)
 
-def deploy(host: str, port: str):
-    respoonse = put(
+def deploy_host_change(host: str):
+    response = put(
         f"https://api.cloudflare.com/client/v4/zones/{cloudflare_zone_id}/dns_records/{cloudflare_target_dns_record}",
-        # f"http://localhost:8022/client/v4/zones/{cloudflare_zone_id}/dns_records/{cloudflare_target_dns_record}",
         headers={
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {cloudflare_api_token}',
@@ -62,10 +62,13 @@ def deploy(host: str, port: str):
             "type": "CNAME"
         }
     )
-    
-    print("DNS record change:", respoonse)
 
-    resp = patch(
+    print("DNS record change… ", end="")
+    if response.ok: print("✅")
+    else:           print(response)
+
+def deploy_port_change(port: int):
+    response = patch(
         f"https://api.cloudflare.com/client/v4/zones/{cloudflare_zone_id}/rulesets/{cloudflare_ruleset_id}/rules/{cloudflare_rule_id}",
         headers={
             'Content-Type': 'application/json',
@@ -75,7 +78,7 @@ def deploy(host: str, port: str):
             "action": "route",
             "action_parameters": {
                 "origin": {
-                    "port": int(port)
+                    "port": port
                 }
             },
             "description": "Use pinggy port",
@@ -86,16 +89,32 @@ def deploy(host: str, port: str):
         }
     )
 
-    print("Port rewrite change:", resp)
+    print("Port rewrite change… ", end="")
+    if response.ok: print("✅")
+    else:           print(response)
+
+def deploy(host: str, port: int):
+    deploy_host_change(host)
+    deploy_port_change(port)
     
 def kill_session(session_name: str):
-    pass
+    command = ["tmux", "kill", "-t", session_name]
+    run(command)
 
 if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("--port", help="this is the port that traffic inbound from the internet should flow into", required=True)
+    parser.add_argument("--session-name", help="this is the tmux session to create", required=False, default=None)
+    args = parser.parse_args()
+    
     try:
-        session_name = f"pinggy{int(random()*100)}"
-        print(f"Starting pinggy session with session id {session_name}")
-        initiate(session_name)
+        if args.session_name is None:
+            session_name = f"pinggy{int(random()*100)}"
+            print(f"Starting pinggy with random session id {session_name}")
+        else:
+            session_name = args.session_name
+            print(f"Starting pinggy with provided session id {session_name}")
+        initiate(session_name, args.port)
         print("Waiting for pinggy session to become active")
         sleep(5)
         print("Probing pinggy session for new URL")

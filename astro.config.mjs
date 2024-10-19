@@ -16,10 +16,9 @@ export default defineConfig({
     }),
   ],
   adapter: node({ mode: "standalone" }),
-  // site: 'https://ft-autonomous.github.io',
   site: `https://${process.env.FT_DOCS_HOST}`,
   base: '/ft_docs',
-  output: 'static',
+  output: process.env.FT_DOCS_FORCE_AUTH == '1' ? 'server' : 'static',
   trailingSlash: 'ignore',
   vite: {
     build: {

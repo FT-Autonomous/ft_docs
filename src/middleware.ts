@@ -1,6 +1,6 @@
 import { clerkMiddleware } from "@clerk/astro/server";
 import config from "../astro.config.mjs";
 
-export const onRequest = config.output === "static"
-  ? (context: any, next: Function) => next()
-  : clerkMiddleware();
+export const onRequest = process.env.FT_DOCS_FORCE_AUTH == '1'
+  ? clerkMiddleware()
+  : (context: any, next: Function) => next();
