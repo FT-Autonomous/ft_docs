@@ -6,7 +6,6 @@ import Identity from "./Identity.astro";
 
 const { title, includeNavBar } = Astro.props;
 
-
 const AuthBarrier = process.env.FT_DOCS_FORCE_AUTH == "1"
   ? Authenticated
   : Identity;
@@ -104,10 +103,11 @@ const secondaryBackgroundColor = "#FFAAAA";
       
       </style>
       <h1>
+        <a href="/ft_docs/"><img style={{ height: "1em" }} src="/ft_docs/favicon.png"/>
         <span>
           <a href="/ft_docs/">Formula Trinity Autonomous Wiki</a>
         </span>
-        <a href="/ft_docs/"><img style={{ height: "1em" }} src="/ft_docs/favicon.png"/>{" "}<UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
+        <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
       </h1>
     </header>
     <AuthBarrier>
