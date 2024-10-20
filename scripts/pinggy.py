@@ -12,6 +12,8 @@ from re import search
 from requests import put, patch
 from os import environ
 
+from tmux import kill_session
+
 # This is an API token with the necessary permissions. TODO: include permissions needed.
 cloudflare_api_token         = environ["CLOUDFLARE_API_TOKEN"]
 # This is the ID of your cloudflare zone, get this from the zone overview.
@@ -29,7 +31,18 @@ def initiate(session_name: str, host_port: int):
     """
     Launch a tmux session in the background with a pinggy client
     """
-    command = ["tmux", "new", "-d", "-s", session_name, "ssh", "-p", "443", "-o", "StrictHostKeyChecking=no", "-o", "ServerAliveInterval=30", f"-R0:localhost:{host_port}", "tcp@a.pinggy.io"]
+    command = [
+        "tmux",
+        "new",
+        "-d",
+        "-s", session_name,
+        "ssh",
+        "-p", "443",
+        "-o", "StrictHostKeyChecking=no",
+        "-o", "ServerAliveInterval=30",
+        f"-R0:localhost:{host_port}",
+        "tcp@a.pinggy.io"
+    ]
     print(" ".join(command))
     result = run(command)
     print(result)
@@ -96,25 +109,16 @@ def deploy_port_change(port: int):
 def deploy(host: str, port: int):
     deploy_host_change(host)
     deploy_port_change(port)
-    
-def kill_session(session_name: str):
-    command = ["tmux", "kill", "-t", session_name]
-    run(command)
 
-if __name__ == "__main__":
-    parser = ArgumentParser()
-    parser.add_argument("--port", help="this is the port that traffic inbound from the internet should flow into", required=True)
-    parser.add_argument("--session-name", help="this is the tmux session to create", required=False, default=None)
-    args = parser.parse_args()
-    
+def main(port: int, session_name: str):
+    if session_name is None:
+        session_name = f"pinggy{int(random()*100)}"
+        print(f"Starting pinggy with random session id {session_name}")
+    else:
+        print(f"Starting pinggy with provided session id {session_name}")
+        
     try:
-        if args.session_name is None:
-            session_name = f"pinggy{int(random()*100)}"
-            print(f"Starting pinggy with random session id {session_name}")
-        else:
-            session_name = args.session_name
-            print(f"Starting pinggy with provided session id {session_name}")
-        initiate(session_name, args.port)
+        initiate(session_name, port)
         print("Waiting for pinggy session to become active")
         sleep(5)
         print("Probing pinggy session for new URL")
@@ -124,3 +128,12 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         kill_session(session_name)
 
+if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("--port", help="this is the port that traffic inbound from the internet should flow into", required=True)
+    parser.add_argument("--session-name", help="this is the tmux session to create", required=False, default=None)
+    args = parser.parse_args()
+    main(
+        port=args.port,
+        session_name=args.session_name,
+    )
