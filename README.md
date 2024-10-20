@@ -17,7 +17,7 @@ bash scripts/live.bash
 To create a self-signed HTTPS frontend to the dev server:
 
 ```
-. .env ; mkcert $FT_DOCS_HOST && CERT=./$FT_DOCS_HOST.pem KEY=$FT_DOCS_HOST-key.pem; socat openssl-listen:7733,cert=$CERT,key=$KEY,verify=0,reuseaddr,fork tcp:localhost:8881
+bash scripts/socat.bash
 ```
 
 To expose that server to the internet use:
