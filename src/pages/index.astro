@@ -26,12 +26,7 @@ ul li:nth-child(odd) {
     <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
     <h2>Departments</h2>
   <ul>
-    <li>Perception</li>
     {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
-    <li>Path Planning</li>
-    <li>Control</li>
-    <li>Hardware</li>
-    <li>Simulation</li>
   </ul>
   <h2>Guides and Tutorials</h2>
   {
