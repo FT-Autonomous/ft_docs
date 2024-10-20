@@ -11,7 +11,7 @@ Generally, you will be editing markdoc files in `src/content`.
 To run the dev server:
 
 ```
-. .env ; npx astro dev  --port 8881 --host
+bash scripts/live.bash
 ```
 
 To create a self-signed HTTPS frontend to the dev server:
@@ -23,7 +23,7 @@ To create a self-signed HTTPS frontend to the dev server:
 To expose that server to the internet use:
 
 ```
-. .env ; python3 ./scripts/pinggy.py --port 7733 && tmux attach
+. .env ; python3 ./scripts/keep.py --port 7733
 ```
 
 ## Building the Static Site
