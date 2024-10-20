@@ -101,17 +101,17 @@ from rclpy.node import Node
 import rclpy
 
 class PathPlanningNode(Node):
-	def __init__(self):
-		super().__init__("path_planning_node")
-		print("node running!")
+    def __init__(self):
+        super().__init__("path_planning_node")
+        print("node running!")
 
 def main():
-	rclpy.init()
-	rclpy.spin(PathPlanningNode())
-	rclpy.shutdown()
+    rclpy.init()
+    rclpy.spin(PathPlanningNode())
+    rclpy.shutdown()
 
 if __name__ == "__main__":
-	main()
+    main()
 ```
 
 `Rclpy` stands for ROS Client for python. There is also `rclcpp`, for c++ masochists, which we are not. To make this accessible from ROS, we have to modify the `setup.py` file. Navigate to the `console_scripts` array and add the following entry:
@@ -150,22 +150,21 @@ import rclpy
 from eufs_msgs.msg import ConeArrayWithCovariance
 
 class PathPlanningNode(Node):
-	def __init__(self):
-		super().__init__("path_planning_node")
-		print("node running!")
-		self.create_subscription(ConeArrayWithCovariance, "/cones", self.cones_cb, 1)
+    def __init__(self):
+        super().__init__("path_planning_node")
+        print("node running!")
+        self.create_subscription(ConeArrayWithCovariance, "/cones", self.cones_cb, 1)
 
-	def cones_cb(self, cones):
-		breakpoint()
+    def cones_cb(self, cones):
+        breakpoint()
 
 def main():
-	rclpy.init()
-	rclpy.spin(PathPlanningNode())
-	rclpy.shutdown()
+    rclpy.init()
+    rclpy.spin(PathPlanningNode())
+    rclpy.shutdown()
 
 if __name__ == "__main__":
-	main()
-
+    main()
 ```
 
 Here is an explanation of the changes made to the file:
@@ -194,45 +193,45 @@ from math import cos, sin
 import time
 
 class PathPlanningVisualiser(rclpy.node.Node):
-	def __init__(self):
-    		super().__init__("path_planning_visualiser")
-    	self.marker_publisher = self.create_publisher(MarkerArray, "/marker", 1)
-    		self.timer = self.create_timer(0, self.timer_cb)
+    def __init__(self):
+        super().__init__("path_planning_visualiser")
+        self.marker_publisher = self.create_publisher(MarkerArray, "/marker", 1)
+        self.timer = self.create_timer(0, self.timer_cb)
 
-	def timer_cb(self):
-    	marker_array = MarkerArray()
-    	t = time.time()
-   	 
-    	# create a text marker
-    		marker = Marker()
-    		marker.header.frame_id = "/base_footprint"
-    	marker.ns, marker.id = "ft_text", 0
-    		marker.type = Marker.TEXT_VIEW_FACING
-    	marker.text = f"It is: {t}"
-    		marker.scale.z = 1.0
-    		marker.color.r, marker.color.g, marker.color.b, marker.color.a = 1.0, 1.0, 1.0, 1.0
-    	marker_array.markers.append(marker)
+    def timer_cb(self):
+        marker_array = MarkerArray()
+        t = time.time()
 
-    	# create a line marker
-    		marker = Marker()
-    	marker.header.frame_id = "/base_footprint"
-    		marker.ns, marker.id = "ft_line", 0
-    	marker.type = Marker.LINE_STRIP
-    		marker.scale.x = 0.25
-    	marker.points.append(Point(x=sin(t), y=cos(t), z=0.0))
-    		marker.points.append(Point(x=-sin(t), y=-cos(t), z=0.0))
-    	marker.color.r, marker.color.g, marker.color.b, marker.color.a = 0.8, 0.4, 0.4, 1.0
-    	marker_array.markers.append(marker)
-   	 
-    	self.marker_publisher.publish(marker_array)
+        # create a text marker
+        marker = Marker()
+        marker.header.frame_id = "/base_footprint"
+        marker.ns, marker.id = "ft_text", 0
+        marker.type = Marker.TEXT_VIEW_FACING
+        marker.text = f"It is: {t}"
+        marker.scale.z = 1.0
+        marker.color.r, marker.color.g, marker.color.b, marker.color.a = 1.0, 1.0, 1.0, 1.0
+        marker_array.markers.append(marker)
+
+        # create a line marker
+        marker = Marker()
+        marker.header.frame_id = "/base_footprint"
+        marker.ns, marker.id = "ft_line", 0
+        marker.type = Marker.LINE_STRIP
+        marker.scale.x = 0.25
+        marker.points.append(Point(x=sin(t), y=cos(t), z=0.0))
+        marker.points.append(Point(x=-sin(t), y=-cos(t), z=0.0))
+        marker.color.r, marker.color.g, marker.color.b, marker.color.a = 0.8, 0.4, 0.4, 1.0
+        marker_array.markers.append(marker)
+
+        self.marker_publisher.publish(marker_array)
 
 def main():
-	rclpy.init()
-	rclpy.spin(PathPlanningVisualiser())
-	rclpy.shutdown()
-    
+    rclpy.init()
+    rclpy.spin(PathPlanningVisualiser())
+    rclpy.shutdown()
+
 if __name__ == "__main__":
-	main()
+    main()
 ```
 
 This code should publish a line and some text to the `/markers` topic which you can visualise in RVIZ.
