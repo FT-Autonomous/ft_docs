@@ -32,7 +32,7 @@ def decide_what_to_do(
     elif len(relevant_sessions) == 1:
         [(session_name, index, created_at)] = relevant_sessions
         age = datetime.datetime.now() - created_at
-        if age.seconds > 60 * 5:
+        if age.seconds > 60 * 50:
             print(f"Going to spawn new pinggy session as {session_name} is too old")
             spawn_new_session(port=port, session_name=f"pinggy{index + 1}")
             print(f"Successfully started new session, waiting for DNS to propagate")
