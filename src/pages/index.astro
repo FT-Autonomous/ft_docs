@@ -4,7 +4,7 @@ const codeEntries = await getCollection('tutorials');
 import * as Context from "../content/departments/config.ts";
 const departmentEntries = await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)));
 import Layout from "../layouts/Layout.astro";
-import Theme from "../theme.ts";
+import * as Theme from "../theme.ts";
 ---
 <Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
   <style>
