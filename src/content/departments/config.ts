@@ -4,3 +4,4 @@ const departmentCollection = defineCollection({
     schema: () => z.object({ title: z.string() }),
 });
 export const collections = { department: departmentCollection };
+export const slugOrder = ['perception', 'state-estimation', 'path-planning', 'control', 'hardware', 'simulation'];

@@ -8,4 +8,4 @@ bwrap \
     --dev-bind / / \
     --bind $temp_base /home \
     --bind $(realpath .) /home/naza/project \
-    bash -c "cd /home/$user/project ; . .env ; npx astro telemetry disable ; FT_DOCS_FORCE_AUTH=1 npx astro dev  --port 8881 --host"
+    bash -c "cd /home/$user/project ; . .env ; npx astro preferences disable devToolbar ; npx astro telemetry disable ; FT_DOCS_FORCE_AUTH=0 npx astro dev  --port 8881 --host"

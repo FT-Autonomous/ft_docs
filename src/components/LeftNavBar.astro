@@ -1,18 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
-const departmentEntries = await getCollection('departments');
+const depts = await getCollection('departments');
+import * as Context from "../content/departments/config.ts";
+const departmentEntries = await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)));
+import * as Theme from "../theme.ts";
 ---
-<style>
+<style define:vars={ Theme }>
 ul {
   list-style-type: none;
   padding-left: 0px;
 }
 ul li {
-  background: linear-gradient(90deg, #350000 0%, #350000 75%, var(--backgroundColor) 100%);
+  background: linear-gradient(90deg, var(--gradientStartEvenColor) 0%, var(--gradientStartEvenColor) 30%, var(--gradientEndColor) 100%);
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 ul li:nth-child(odd) {
-  background: linear-gradient(90deg, #2E0000 0%, #2E0000 75%, var(--backgroundColor) 100%);
+  background: linear-gradient(90deg, var(--gradientStartOddColor) 0%, var(--gradientStartOddColor) 30%, var(--backgroundColor) 100%);
 }
 </style>
 <h2>Departments</h2>

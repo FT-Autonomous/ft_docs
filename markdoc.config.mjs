@@ -24,7 +24,4 @@ export default defineMarkdocConfig({
       render: component('./src/components/Image.astro'),
     },
   },
-  extends: [
-    shiki({ theme: 'red' }),
-  ],
 });

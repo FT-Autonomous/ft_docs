@@ -1,43 +1,45 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
-const departmentEntries = await getCollection('departments');
+import * as Context from "../content/departments/config.ts";
+const departmentEntries = await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)));
 import Layout from "../layouts/Layout.astro";
+import Theme from "../theme.ts";
 ---
 <Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
   <style>
-  ul {
+ul {
   list-style-type: none;
   padding-left: 0px;
 }
 ul li {
-  background: linear-gradient(90deg, #350000 0%, #350000 30%, var(--backgroundColor) 100%);
+  background: linear-gradient(90deg, var(--gradientStartEvenColor) 0%, var(--gradientStartEvenColor) 30%, var(--gradientEndColor) 100%);
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 ul li:nth-child(odd) {
-  background: linear-gradient(90deg, #2E0000 0%, #2E0000 30%, var(--backgroundColor) 100%);
+  background: linear-gradient(90deg, var(--gradientStartOddColor) 0%, var(--gradientStartOddColor) 30%, var(--backgroundColor) 100%);
 }
-  </style>
-  <div style={{paddingLeft: "30px"}}>
-  <style>
-      object {
-        width: 600px;
-      }
-      </style>
-    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
+</style>
+  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+    <style>
+object {
+  width: 600px;
+}
+</style>
     <h2>Departments</h2>
-  <ul>
-    {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
-  </ul>
-  <h2>Guides and Tutorials</h2>
-  {
+    <ul>
+      {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+    </ul>
+    <h2>Guides and Tutorials</h2>
+    {
 <ul>
   {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
 </ul>
 }
-    <h2>Misc</h2>
-    <ul>
-      <li>Stuff here …</li>
-    </ul>
+    <h2>System Diagram</h2>
+    
+    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
   </div>
-    </div>
+</div>
 </Layout>
