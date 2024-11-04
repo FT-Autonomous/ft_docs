@@ -2,7 +2,8 @@
 import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
 import * as Context from "../content/departments/config.ts";
-const departmentEntries = await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)));
+// This is fucked, fix it later plz
+const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);;
 import Layout from "../layouts/Layout.astro";
 import * as Theme from "../theme.ts";
 ---
