@@ -16,8 +16,8 @@ import { SignedIn, SignedOut, SignInButton } from "@clerk/astro/components";
       </style>
     <p>We keep our secrets</p>
     <SignInButton
-      forceRedirectUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`}
-      fallbackRedirectUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`}
+      forceRedirectUrl={`https://${process.env.FT_DOCS_HOST}`}
+      fallbackRedirectUrl={`https://${process.env.FT_DOCS_HOST}`}
       mode="modal"
     />
   </center>

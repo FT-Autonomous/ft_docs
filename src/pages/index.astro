@@ -30,17 +30,17 @@ object {
 </style>
     <h2>Departments</h2>
     <ul>
-      {departmentEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+      {departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
     </ul>
     <h2>Guides and Tutorials</h2>
     {
 <ul>
-  {codeEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}}>{e.data.title}</a></li>))}
+  {codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
 </ul>
 }
     <h2>System Diagram</h2>
     
-    <object type="image/svg+xml" data="/ft_docs/system diagram.svg"></object>
+    <object type="image/svg+xml" data="/system diagram.svg"></object>
   </div>
 </div>
 </Layout>

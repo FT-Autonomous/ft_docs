@@ -14,7 +14,7 @@ npm create astro
 
 This will launch an interactive TUI application for boostrapping an Astro project, much like `create-react-app` if you have ever used React.
 {% right %}
-    {% figure src="/ft_docs/npm create astro.png" alt="TUI Interface" width="350" caption="Graphic showing the interactive TUI presented by 'npm create astro'" /%}
+    {% figure src="/npm create astro.png" alt="TUI Interface" width="350" caption="Graphic showing the interactive TUI presented by 'npm create astro'" /%}
 {% /right %}
 
 You'll want to create your Astro project in the current directory (`./`), use the `empty` template, use `typescript` and specify that you like your typescript `strict` and finally install dependencies. There is no need to run `npm init` or create a `src/` folder as the template above will have already done this for you.
@@ -92,7 +92,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 <h1>Astro</h1>
 <ul>
-  {tutorialsEntries.map(e => (<li><a href={`/ft_docs/${e.slug}`}>{e.data.title}</a></li>))}
+  {tutorialsEntries.map(e => (<li><a href={`/${e.slug}`}>{e.data.title}</a></li>))}
 </ul>
 ```
 
@@ -184,7 +184,7 @@ Markdoc is documented here: <https://markdoc.dev/docs/getting-started>.
 
 ## Adding Images
 
-Add the image to the `public/<IMAGE>` folder. Once you've done that you should be able to access it anywhere via `ft_docs/<BASE>`.
+Add the image to the `public/<IMAGE>` folder. Once you've done that you should be able to access it anywhere via `<BASE>`.
 
 Use the 
 
@@ -239,7 +239,7 @@ const { title } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/ft_docs/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
@@ -391,7 +391,7 @@ We then want to replace our direct usage of `<slot/>` with logic that only prese
 
 In the Clerk dashboard, you want to disable account creation and have it set to be invite-only.
 
-{% figure src="/ft_docs/Signin restrictions in clerk.png" height="250px" /%}
+{% figure src="/Signin restrictions in clerk.png" height="250px" /%}
 
 ### Styling Clerk
 
