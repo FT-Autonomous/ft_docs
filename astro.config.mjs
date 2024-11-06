@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import { dark } from '@clerk/themes'
+import { dark } from '@clerk/themes';
 import markdoc from '@astrojs/markdoc';
 import clerk from '@clerk/astro';
 import node from '@astrojs/node';

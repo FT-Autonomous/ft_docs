@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+const entry = await getEntry('departments', 'perception-theory');
+const { Content } = await entry.render();
+---
+<Layout title={entry.data.title}>
+  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+    <Content />
+  </div>
+</Layout>

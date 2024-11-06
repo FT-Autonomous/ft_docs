@@ -3,7 +3,6 @@ import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
 const depts = await getCollection('departments');
 import * as Context from "../content/departments/config.ts";
-// This is fucked, fix it later plz
 const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
 import * as Theme from "../theme.ts";
 ---
@@ -16,16 +15,63 @@ ul li {
   background: linear-gradient(90deg, var(--gradientStartEvenColor) 0%, var(--gradientStartEvenColor) 30%, var(--gradientEndColor) 100%);
   padding-top: 1px;
   padding-bottom: 1px;
+  position: relative;
 }
 ul li:nth-child(odd) {
   background: linear-gradient(90deg, var(--gradientStartOddColor) 0%, var(--gradientStartOddColor) 30%, var(--backgroundColor) 100%);
 }
+.dropdown-content {
+  display: none;
+  background-color: #f9f9f9;
+  padding-left: 20px;
+}
+.dropdown-content a {
+  color: black;
+  padding: 5px 0;
+  text-decoration: none;
+  display: block;
+  position: relative;
+}
+.dropdown-content a::after {
+  content: '▸';
+  position: absolute;
+  right: 10px;
+  transition: transform 0.3s;
+}
+.dropdown-btn {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.show {
+  display: block;
+}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.dropdown-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(event) {
+      // Close all dropdowns
+      document.querySelectorAll('.dropdown-content').forEach(function(content) {
+        content.classList.remove('show');
+      });
+      // Open the clicked dropdown
+      const dropdownContent = event.currentTarget.nextElementSibling;
+      dropdownContent.classList.toggle('show');
+    });
+  });
+});
+</script>
 <h2>Departments</h2>
 <ul>
-  {departmentEntries.map(e => (<li><a href={`/${e.slug}`}>{e.data.title}</a></li>))}
-</ul>
-<h2>Guides and Tutorials</h2>
-<ul>
-  {codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
+  {departmentEntries.map(department => (
+    <li class="dropdown">
+      <span class="dropdown-btn">{department.data.title}</span>
+      <div class="dropdown-content">
+        <a href={`/${department.slug}`}>Overview</a>
+        {department.slug === 'perception' && (
+          <a href={`/${department.slug}-theory`}>Theory</a>
+        )}
+      </div>
+    </li>
+  ))}
 </ul>

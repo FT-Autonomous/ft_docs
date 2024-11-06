@@ -3,15 +3,11 @@ import { UserButton } from "@clerk/astro/components";
 import LeftNavBar from "../components/LeftNavBar.astro";
 import Authenticated from "./Authenticated.astro";
 import Identity from "./Identity.astro";
-
 const { title, includeNavBar } = Astro.props;
-
 const AuthBarrier = process.env.FT_DOCS_FORCE_AUTH == "1"
   ? Authenticated
   : Identity;
-
 import * as Theme from "../theme.ts";
-
 ---
 <html lang="en">
   <head>
@@ -27,15 +23,11 @@ import * as Theme from "../theme.ts";
       :global(pre) {
         padding: 10px;
         /* box-shadow: inset var(--backgroundColor) 0px 0px 5px 5px; */
-        background-color: #E9E9E9;
-        overflow-x: auto;
-        display: block;
       }
       .two-panel-layout {
         display: flex;
         flex-direction: row;
       }
-      
       .left {
         min-width: 175px;
         max-width: 175px;
@@ -44,65 +36,22 @@ import * as Theme from "../theme.ts";
         margin-right: 10px;
         border-right: 1px solid white;
       }
-      
-      </style>
+    </style>
     <header>
       <style define:vars={ Theme }>
-      :global(a) { color: red; text-decoration: none; }
-      :global(a:visited) { color: var(--linkVisitedColor); } /* basically maroon */
-      :global(a:hover) { text-decoration: underline }
-      :global(a:hover:visited) { color: var(--linkHoverVisitedColor); }
-      :global(a:hover) { color: var(--linkHoverColor); }
-      
-      header {
-        color: white;
-        background-color: black;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 5x;
-        margin: 10px;
-        border-bottom: 1px solid var(--foregroundColor);
-        display: flex;
-      }
-
-      img {
-        padding-top: 0.3em;
-      }
-      
-      body {
-        /*
-color: var(--foregroundColor); 
-        background-color: var(--backgroundColor);
-*/
-        /* Copied from docs.evervault.com */
-        /* font-family: Roobert,Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; */
-        font-family: Montserrat;
-        font-style: normal;
-      }
-      
-      :global(footer) {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 10px;
-        margin: 10px;
-        border-top: 1px solid var(--foregroundColor);
-      }
-
-      h1 a {
-        /* https://stackoverflow.com/questions/8919682/remove-all-styling-formatting-from-hyperlinks */
-        color: inherit;
-        text-decoration: none;
-      }
-      
-      h1 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5em;
-      }
-
-      :global(h1,h2,h3) { font-weight: 300; 
-      
+        :global(a) { color: red; text-decoration: none; }
+        :global(a:visited) { color: var(--linkVisitedColor); } /* basically maroon */
+        :global(a:hover) { text-decoration: underline }
+        :global(a:hover:visited) { color: var(--linkHoverVisitedColor); }
+        :global(a:hover) { color: var(--linkHoverColor); }
+        header {
+          color: white;
+          background-color: black;
+          padding-left: 15px;
+          padding-right: 15px;
+          padding-top: 5x;
+          margin: 10px;
+        }
       </style>
       <h1>
         <a href="/"><img style={{ height: "1em" }} src="/favicon.png"/>
@@ -111,18 +60,12 @@ color: var(--foregroundColor);
         </span>
         <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
       </h1>
-      <!-- 
-      <div style={{display: "flex", alignItems: "center", gap: "1em" }}>
-        <span>Search</span>
-         <input type="text" width="300px" style={{ backgroundColor: Theme.backgroundColor, color: Theme.foregroundColor }} />
-      </div>
-      -->
     </header>
     <AuthBarrier>
       <div class="two-panel-layout">
         {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
-      <div>
-        <slot/>
+        <div>
+          <slot/>
         </div>
       </div>
     </AuthBarrier>
