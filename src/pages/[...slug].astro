@@ -3,8 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from 'astro:content';
 import config from "../../astro.config.mjs";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
-  const collection =  [
+  const collection = [
     ...await getCollection('departments'),
     ...await getCollection('tutorials')
   ];
@@ -14,7 +16,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const collection = await [
+const collection = [
   ...await getCollection('departments'),
   ...await getCollection('tutorials')
 ];
@@ -23,8 +25,12 @@ let entry = config.output === "static"
   ? Astro.props.entry
   : collection.find(entry => entry.slug == Astro.params.slug);
 
-const { data: { description, title } } = entry ?? { data: { description: 'Not Found', title: 'Not Found' } };
-const { Content } = entry !== undefined ? await entry.render() : { Content : '' };
+if (!entry) {
+  entry = { data: { description: 'Not Found', title: 'Not Found' }, render: async () => ({ Content: () => 'Content not found' }) };
+}
+
+const { data: { description, title } } = entry;
+const { Content } = await entry.render();
 ---
 <Layout title={title}>
   <div style={{paddingLeft: "15px", paddingRight: "15px"}}>

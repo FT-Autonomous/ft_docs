@@ -5,6 +5,10 @@ const depts = await getCollection('departments');
 import * as Context from "../content/departments/config.ts";
 const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
 import * as Theme from "../theme.ts";
+
+// Remove duplicates by using a Set or filtering logic
+const uniqueDepartmentEntries = Array.from(new Set(departmentEntries.map(dept => dept.slug)))
+  .map(slug => departmentEntries.find(dept => dept.slug === slug));
 ---
 <style define:vars={ Theme }>
 ul {
@@ -63,14 +67,12 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <h2>Departments</h2>
 <ul>
-  {departmentEntries.map(department => (
+  {uniqueDepartmentEntries.map(department => (
     <li class="dropdown">
       <span class="dropdown-btn">{department.data.title}</span>
       <div class="dropdown-content">
         <a href={`/${department.slug}`}>Overview</a>
-        {department.slug === 'perception' && (
-          <a href={`/${department.slug}-theory`}>Theory</a>
-        )}
+        <a href={`/${department.slug}-theory`}>Theory</a>
       </div>
     </li>
   ))}

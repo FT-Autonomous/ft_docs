@@ -18,7 +18,7 @@ export default defineConfig({
   adapter: node({ mode: "standalone" }),
   site: `https://${process.env.FT_DOCS_HOST}`,
   base: '/',
-  output: process.env.FT_DOCS_FORCE_AUTH == '1' ? 'server' : 'static',
+  output: 'server', // Add this line to set the output to "server"
   trailingSlash: 'ignore',
   vite: {
     build: {
