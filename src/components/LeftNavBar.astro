@@ -23,7 +23,7 @@ ul li {
 }
 ul li a {
   color: var(--linkColor); /* Red color for links */
-  text-decoration: none;
+  text-decoration: underline; /* Add underline to main links */
 }
 ul li a:hover {
   color: var(--linkHoverColor); /* Bright Red color for hovered links */
@@ -36,22 +36,37 @@ ul li a:hover {
 .dropdown-content a {
   color: var(--foregroundColor); /* White text color */
   padding: 5px 0;
-  text-decoration: none;
+  text-decoration: underline; /* Add underline to subtabs */
   display: block;
   position: relative;
 }
 .dropdown-content a:hover {
   color: var(--linkHoverColor); /* Bright Red color for hovered links */
+  text-decoration: underline; /* Add underline on hover */
 }
 .dropdown-content a::after {
-  content: '▸';
+  content: '▸'; /* Right-facing arrow */
   position: absolute;
   right: 10px;
+  font-size: 0.8em; /* Adjust as needed */
   transition: transform 0.3s;
 }
 .dropdown-btn {
   cursor: pointer;
   text-decoration: underline;
+  color: var(--linkColor); /* Red color for main tabs */
+  position: relative;
+}
+
+/* .dropdown-btn::after {
+  content: '▼'; /* Downward-facing arrow */
+  position: absolute;
+  right: -20px; /* Adjust as needed */
+  font-size: 0.8em; /* Adjust as needed */
+} */
+
+.dropdown-btn:hover {
+  color: var(--linkHoverColor); /* Bright Red color for hovered main tabs */
 }
 .show {
   display: block;
@@ -80,6 +95,17 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="dropdown-content">
         <a href={`/${department.slug}`}>Overview</a>
         <a href={`/${department.slug}-theory`}>Theory</a>
+      </div>
+    </li>
+  ))}
+</ul>
+<h2>Guides and Tutorials</h2>
+<ul>
+  {codeEntries.map(tutorial => (
+    <li class="dropdown">
+      <span class="dropdown-btn">{tutorial.data.title}</span>
+      <div class="dropdown-content">
+        <a href={`/${tutorial.slug}`}>{tutorial.data.title}</a>
       </div>
     </li>
   ))}
