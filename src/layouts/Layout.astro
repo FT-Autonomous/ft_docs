@@ -16,58 +16,62 @@ import * as Theme from "../theme.ts";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-  </head>
-  <body>
     <style define:vars={ Theme }>
       @import url(https://cdn.xeiaso.net/static/css/iosevka/family.css);
-      :global(pre) {
-        padding: 10px;
-        /* box-shadow: inset var(--backgroundColor) 0px 0px 5px 5px; */
+      body {
+        background-color: var(--backgroundColor);
+        color: var(--foregroundColor);
+      }
+      a {
+        color: var(--foregroundColor);
+      }
+      a:visited {
+        color: var(--linkVisitedColor);
+      }
+      a:hover {
+        color: var(--linkHoverColor);
       }
       .two-panel-layout {
         display: flex;
         flex-direction: row;
       }
-      .left {
-        min-width: 175px;
-        max-width: 175px;
-        padding-left: 20px;
-        padding-right: 20px;
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        background-color: var(--backgroundColor);
+      }
+      .logo {
+        height: 1em;
         margin-right: 10px;
-        border-right: 1px solid white;
+      }
+      .title {
+        text-align: center;
+        margin: 0;
+      }
+      .main-content {
+        display: flex;
+      }
+      .left-nav {
+        min-width: 200px;
+      }
+      .content {
+        flex-grow: 1;
+        padding: 20px;
       }
     </style>
+  </head>
+  <body>
     <header>
-      <style define:vars={ Theme }>
-        :global(a) { color: red; text-decoration: none; }
-        :global(a:visited) { color: var(--linkVisitedColor); } /* basically maroon */
-        :global(a:hover) { text-decoration: underline }
-        :global(a:hover:visited) { color: var(--linkHoverVisitedColor); }
-        :global(a:hover) { color: var(--linkHoverColor); }
-        header {
-          color: white;
-          background-color: black;
-          padding-left: 15px;
-          padding-right: 15px;
-          padding-top: 5x;
-          margin: 10px;
-        }
-      </style>
-      <h1>
-        <a href="/"><img style={{ height: "1em" }} src="/favicon.png"/>
-        <span>
-          <a href="/">Formula Trinity Autonomous Wiki</a>
-        </span>
-        <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
-      </h1>
+      <a href="/"><img class="logo" src="/favicon.png" alt="Logo" /></a>
+      <h1 class="title">Formula Trinity</h1>
     </header>
-    <AuthBarrier>
-      <div class="two-panel-layout">
-        {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
-        <div>
-          <slot/>
-        </div>
+    <main class="main-content">
+      {includeNavBar && <div class="left-nav"><LeftNavBar /></div>}
+      <div class="content">
+        <slot />
       </div>
-    </AuthBarrier>
+    </main>
   </body>
 </html>

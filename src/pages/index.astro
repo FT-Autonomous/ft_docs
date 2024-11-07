@@ -2,45 +2,59 @@
 import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
 import * as Context from "../content/departments/config.ts";
-// This is fucked, fix it later plz
-const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);;
+const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
 import Layout from "../layouts/Layout.astro";
 import * as Theme from "../theme.ts";
 ---
 <Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
-  <style>
-ul {
-  list-style-type: none;
-  padding-left: 0px;
-}
-ul li {
-  background: linear-gradient(90deg, var(--gradientStartEvenColor) 0%, var(--gradientStartEvenColor) 30%, var(--gradientEndColor) 100%);
-  padding-top: 1px;
-  padding-bottom: 1px;
-}
-ul li:nth-child(odd) {
-  background: linear-gradient(90deg, var(--gradientStartOddColor) 0%, var(--gradientStartOddColor) 30%, var(--backgroundColor) 100%);
-}
-</style>
-  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
-    <style>
-object {
-  width: 600px;
-}
-</style>
-    <h2>Departments</h2>
-    <ul>
-      {departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
-    </ul>
-    <h2>Guides and Tutorials</h2>
-    {
-<ul>
-  {codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
-</ul>
-}
-    <h2>System Diagram</h2>
-    
-    <object type="image/svg+xml" data="/system diagram.svg"></object>
+  <style define:vars={ Theme }>
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 20px;
+      background-color: var(--backgroundColor); /* Darker Red background */
+    }
+    .column {
+      background: #000000; /* Black background for columns */
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: var(--foregroundColor); /* White text color */
+    }
+    .column h2 {
+      color: var(--secondaryBackgroundColor); /* Black color for titles */
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0px;
+    }
+    ul li {
+      background: none; /* No background for list items */
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+    ul li a {
+      color: var(--linkColor); /* Red color for links */
+      text-decoration: none;
+    }
+    ul li a:hover {
+      color: var(--linkHoverColor); /* Bright Red color for hovered links */
+    }
+  </style>
+  <div class="container">
+    <div class="column">
+      <h2>Departments</h2>
+      <ul>
+        {departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
+      </ul>
+    </div>
+    <div class="column">
+      <h2>Guides and Tutorials</h2>
+      <ul>
+        {codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}
+      </ul>
+    </div>
   </div>
-</div>
 </Layout>

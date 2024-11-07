@@ -4,7 +4,7 @@ import { getEntry } from 'astro:content';
 const entry = await getEntry('departments', 'hardware-theory');
 const { Content } = await entry.render();
 ---
-<Layout title={entry.data.title}>
+<Layout title={entry.data.title} includeNavBar={true}>
   <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
     <Content />
   </div>

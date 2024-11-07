@@ -16,25 +16,32 @@ ul {
   padding-left: 0px;
 }
 ul li {
-  background: linear-gradient(90deg, var(--gradientStartEvenColor) 0%, var(--gradientStartEvenColor) 30%, var(--gradientEndColor) 100%);
+  background: none; /* No background for list items */
   padding-top: 1px;
   padding-bottom: 1px;
   position: relative;
 }
-ul li:nth-child(odd) {
-  background: linear-gradient(90deg, var(--gradientStartOddColor) 0%, var(--gradientStartOddColor) 30%, var(--backgroundColor) 100%);
+ul li a {
+  color: var(--linkColor); /* Red color for links */
+  text-decoration: none;
+}
+ul li a:hover {
+  color: var(--linkHoverColor); /* Bright Red color for hovered links */
 }
 .dropdown-content {
   display: none;
-  background-color: #f9f9f9;
+  background-color: var(--backgroundColor); /* Match website background */
   padding-left: 20px;
 }
 .dropdown-content a {
-  color: black;
+  color: var(--foregroundColor); /* White text color */
   padding: 5px 0;
   text-decoration: none;
   display: block;
   position: relative;
+}
+.dropdown-content a:hover {
+  color: var(--linkHoverColor); /* Bright Red color for hovered links */
 }
 .dropdown-content a::after {
   content: '▸';
