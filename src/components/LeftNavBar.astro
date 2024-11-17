@@ -1,95 +1,86 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 const codeEntries = await getCollection('tutorials');
-const depts = await getCollection('departments');
-import * as Context from "../content/departments/config.ts";
-const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
+import * as DepartmentsContext from "../content/departments/config.ts";
+const departmentEntries = (await Promise.all(DepartmentsContext.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
 import * as Theme from "../theme.ts";
-
-// Remove duplicates by using a Set or filtering logic
-const uniqueDepartmentEntries = Array.from(new Set(departmentEntries.map(dept => dept.slug)))
-  .map(slug => departmentEntries.find(dept => dept.slug === slug));
 ---
 <style define:vars={ Theme }>
+
 ul {
   list-style-type: none;
   padding-left: 0px;
 }
+
+.left li {
+  text-align: right;
+}
+
 ul li {
-  background: none; /* No background for list items */
+  background: var(--gradientStartEvenColor);
   padding-top: 1px;
   padding-bottom: 1px;
-  position: relative;
 }
-ul li a {
-  color: var(--linkColor); /* Red color for links */
-  text-decoration: underline; /* Add underline to main links */
+
+ul li:nth-child(odd) {
+  background: var(--gradientStartOddColor);
 }
-ul li a:hover {
-  color: var(--linkHoverColor); /* Bright Red color for hovered links */
-}
+
+
 .dropdown-content {
   display: none;
-  background-color: var(--backgroundColor); /* Match website background */
+  background-color: var(--backgroundColor);
   padding-left: 20px;
 }
+
 .dropdown-content a {
-  color: var(--foregroundColor); /* White text color */
+  color: var(--foregroundColor);
   padding: 5px 0;
-  text-decoration: underline; /* Add underline to subtabs */
   display: block;
-  position: relative;
 }
 .dropdown-content a:hover {
-  color: var(--linkHoverColor); /* Bright Red color for hovered links */
-  text-decoration: underline; /* Add underline on hover */
+  color: var(--linkHoverColor);
 }
-.dropdown-content a::after {
-  content: '▸'; /* Right-facing arrow */
-  position: absolute;
-  right: 10px;
-  font-size: 0.8em; /* Adjust as needed */
-  transition: transform 0.3s;
+
+.dropdown-btn::before {
+  content: "▸";
+  padding-right: 0.5em;
 }
+
+.show::before {
+  content: "▼";
+}
+
 .dropdown-btn {
   cursor: pointer;
-  text-decoration: underline;
-  color: var(--linkColor); /* Red color for main tabs */
+  color: var(--linkColor);
   position: relative;
 }
 
-/* .dropdown-btn::after {
-  content: '▼'; /* Downward-facing arrow */
-  position: absolute;
-  right: -20px; /* Adjust as needed */
-  font-size: 0.8em; /* Adjust as needed */
-} */
-
-.dropdown-btn:hover {
-  color: var(--linkHoverColor); /* Bright Red color for hovered main tabs */
-}
-.show {
+.dropdown-btn:hover { color: var(--linkHoverColor) }
+.show ~ .dropdown-content {
   display: block;
+  animation: ease-in 1s;
 }
 </style>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.dropdown-btn').forEach(function(btn) {
-    btn.addEventListener('click', function(event) {
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.dropdown-btn').forEach(btn => {
+    btn.addEventListener('click', event => {
       // Close all dropdowns
-      document.querySelectorAll('.dropdown-content').forEach(function(content) {
+      document.querySelectorAll('.dropdown-btn').forEach(content => {
         content.classList.remove('show');
       });
       // Open the clicked dropdown
-      const dropdownContent = event.currentTarget.nextElementSibling;
-      dropdownContent.classList.toggle('show');
+      event.currentTarget.classList.toggle('show');
     });
   });
 });
 </script>
 <h2>Departments</h2>
 <ul>
-  {uniqueDepartmentEntries.map(department => (
+  {departmentEntries.map(department => (
     <li class="dropdown">
       <span class="dropdown-btn">{department.data.title}</span>
       <div class="dropdown-content">
@@ -102,11 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <h2>Guides and Tutorials</h2>
 <ul>
   {codeEntries.map(tutorial => (
-    <li class="dropdown">
-      <span class="dropdown-btn">{tutorial.data.title}</span>
-      <div class="dropdown-content">
-        <a href={`/${tutorial.slug}`}>{tutorial.data.title}</a>
-      </div>
+    <li>
+      <a href={`/${tutorial.slug}`}>{tutorial.data.title}</a>
     </li>
   ))}
 </ul>

@@ -13,11 +13,14 @@ ul {
   padding-left: 0px;
 }
 
-.panel {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  flex-direction: column;
+ul li {
+  background: var(--gradientStartEvenColor);
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+ul li:nth-child(odd) {
+  background: var(--gradientStartOddColor);
 }
 
 </style>
@@ -25,7 +28,7 @@ ul {
     <style>
 object { width: 100%; }
 </style>
-    <div class="panel">
+    <div>
       <h2>Departments</h2>
       <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
     </div>
