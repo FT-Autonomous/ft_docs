@@ -43,7 +43,7 @@ ul li:nth-child(odd) {
   color: var(--linkHoverColor);
 }
 
-.dropdown-btn::before {
+.dropdown-button::before {
   content: "▸";
   padding-right: 0.5em;
 }
@@ -52,13 +52,13 @@ ul li:nth-child(odd) {
   content: "▼";
 }
 
-.dropdown-btn {
+.dropdown-button {
   cursor: pointer;
   color: var(--linkColor);
   position: relative;
 }
 
-.dropdown-btn:hover { color: var(--linkHoverColor) }
+.dropdown-button:hover { color: var(--linkHoverColor) }
 .show ~ .dropdown-content {
   display: block;
   animation: ease-in 1s;
@@ -67,14 +67,13 @@ ul li:nth-child(odd) {
 <script>
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.dropdown-btn').forEach(btn => {
-    btn.addEventListener('click', event => {
+  document.querySelectorAll('.dropdown-button').forEach(button => {
+    button.addEventListener('click', event => {
       // Close all dropdowns
-      document.querySelectorAll('.dropdown-btn').forEach(content => {
+      document.querySelectorAll('.dropdown-button').forEach(content => {
         content.classList.remove('show');
       });
-      // Open the clicked dropdown
-      event.currentTarget.classList.toggle('show');
+      (event.target as HTMLButtonElement).classList.toggle('show');
     });
   });
 });
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <ul>
   {departmentEntries.map(department => (
     <li class="dropdown">
-      <span class="dropdown-btn">{department.data.title}</span>
+      <span class="dropdown-button">{department.data.title}</span>
       <div class="dropdown-content">
         <a href={`/${department.slug}`}>Overview</a>
         <a href={`/${department.slug}-theory`}>Theory</a>
