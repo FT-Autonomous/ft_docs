@@ -1,11 +1,13 @@
 /* Site Wide Color Schemes */
-export const backgroundColor = "#4B0000"; // Darker Red
-export const foregroundColor = "#FFFFFF"; // White
-export const secondaryBackgroundColor = "#FF0000"; // Red
-export const gradientStartColor = ""; // No Color
-export const linkVisitedColor = "#808080"; // Grey
-export const linkHoverVisitedColor = "#B71020"; // Dark Red
-export const linkHoverColor = "#FF1030"; // Bright Red
-export const gradientStartEvenColor = "#4B0000"; // Darker Red
-export const gradientStartOddColor = "#808080"; // Grey
-export const gradientEndColor = "#4B0000"; // Darker Red
+// export const backgroundColor = "#E0FFFF";
+export const backgroundColor = "#FFFFFF";
+// export const foregroundColor = "#111";
+export const foregroundColor = "#101010";
+export const secondaryBackgroundColor = "#005555";
+export const gradientStartColor = "";
+export const linkVisitedColor = "#950000";
+export const linkHoverVisitedColor = "#B71020";
+export const linkHoverColor = "#FF1030";
+export const gradientStartEvenColor = "hsl(0, 0%, 92%)";
+export const gradientStartOddColor = "hsl(0, 0%, 87%)";
+export const gradientEndColor = backgroundColor;
