@@ -23,6 +23,14 @@ ul li:nth-child(odd) {
   background: var(--gradientStartOddColor);
 }
 
+ul li a {
+  color: var(--foregroundColor); /* Ensure links are white */
+  text-decoration: none; /* Remove underlines */
+}
+
+ul li a:hover {
+  color: var(--linkHoverColor); /* Use the new hover color */
+}
 </style>
   <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
     <style>

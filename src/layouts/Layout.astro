@@ -11,7 +11,6 @@ const AuthBarrier = process.env.FT_DOCS_FORCE_AUTH == "1"
   : Identity;
 
 import * as Theme from "../theme.ts";
-
 ---
 <html lang="en">
   <head>
@@ -20,95 +19,68 @@ import * as Theme from "../theme.ts";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <style define:vars={ Theme }>
+      body {
+        background-color: var(--backgroundColor);
+        color: var(--foregroundColor);
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        background-color: var(--secondaryBackgroundColor);
+        color: var(--foregroundColor);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid var(--foregroundColor);
+      }
+      header a {
+        color: var(--foregroundColor); /* Always white */
+        text-decoration: none; /* Remove underlines */
+        font-size: 1.5rem;
+      }
+      header a:hover {
+        color: var(--linkHoverColor); /* Use the new hover color */
+      }
+      .two-panel-layout {
+        display: flex;
+      }
+      .left {
+        min-width: 200px;
+        max-width: 200px;
+        padding: 1rem;
+        background-color: var(--gradientStartEvenColor);
+      }
+      .content {
+        flex: 1;
+        padding: 1rem;
+      }
+      footer {
+        background-color: var(--secondaryBackgroundColor);
+        color: var(--foregroundColor);
+        text-align: center;
+        padding: 1rem;
+        border-top: 2px solid var(--foregroundColor);
+      }
+    </style>
   </head>
   <body>
-    <style define:vars={ Theme }>
-      @import url(https://cdn.xeiaso.net/static/css/iosevka/family.css);
-      :global(pre) {
-        padding: 10px;
-        /* box-shadow: inset var(--backgroundColor) 0px 0px 5px 5px; */
-        background-color: #E9E9E9;
-        overflow-x: auto;
-        display: block;
-      }
-      .two-panel-layout { display: flex; }
-      
-      .left {
-        min-width: 175px;
-        max-width: 175px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin-right: 10px;
-      }
-      
-      </style>
     <header>
-      <style define:vars={ Theme }>
-      :global(a) { color: red; text-decoration: none; }
-      :global(a:visited) { color: var(--linkVisitedColor); }
-      :global(a:hover) { text-decoration: underline }
-      :global(a:hover:visited) { color: var(--linkHoverVisitedColor); }
-      :global(a:hover) { color: var(--linkHoverColor); }
-      
-      header {
-        color: white;
-        background-color: black;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 5x;
-        margin: 10px;
-        border-bottom: 1px solid var(--foregroundColor);
-        display: flex;
-      }
-
-      img {
-        padding-top: 0.3em;
-      }
-      
-      body {
-        font-family: Montserrat;
-        font-style: normal;
-      }
-      
-      :global(footer) {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 10px;
-        margin: 10px;
-        border-top: 1px solid var(--foregroundColor);
-      }
-
-      h1 a {
-        /* https://stackoverflow.com/questions/8919682/remove-all-styling-formatting-from-hyperlinks */
-        color: inherit;
-        text-decoration: none;
-      }
-      
-      h1 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5em;
-      }
-
-      :global(h1,h2,h3) { font-weight: 300; }
-      
-      </style>
-      <h1>
-        <a href="/"><img style={{ height: "1em" }} src="/favicon.png"/>
-        <span>
-          <a href="/">Formula Trinity Autonomous Wiki</a>
-        </span>
-        <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} /></a>
-      </h1>
+      <a href="/"><img style="height: 2rem;" src="/favicon.png" alt="Logo"/> Formula Trinity Autonomous Wiki</a>
+      <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} />
     </header>
     <AuthBarrier>
       <div class="two-panel-layout">
         {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
-      <div>
-        <slot/>
+        <div class="content">
+          <slot/>
         </div>
       </div>
     </AuthBarrier>
+    <footer>
+      &copy; {new Date().getFullYear()} Formula Trinity Autonomous Wiki
+    </footer>
   </body>
 </html>

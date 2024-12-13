@@ -26,6 +26,14 @@ ul li:nth-child(odd) {
   background: var(--gradientStartOddColor);
 }
 
+ul li a {
+  color: var(--foregroundColor); /* Ensure links are white */
+  text-decoration: none; /* Remove underlines */
+}
+
+ul li a:hover {
+  color: var(--linkHoverColor); /* Use the new hover color */
+}
 
 .dropdown-content {
   display: none;
@@ -37,8 +45,9 @@ ul li:nth-child(odd) {
   color: var(--foregroundColor);
   padding: 5px 0;
   display: block;
-  background-color: var(--gradientStartLightColor);
+  text-decoration: none; /* Remove underlines */
 }
+
 .dropdown-content a:hover {
   color: var(--linkHoverColor);
 }
@@ -65,7 +74,6 @@ ul li:nth-child(odd) {
 }
 </style>
 <script>
-
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.dropdown-button').forEach(button => {
     button.addEventListener('click', event => {
