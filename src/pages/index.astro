@@ -8,54 +8,208 @@ import * as Theme from "../theme.ts";
 ---
 <Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
   <style>
-ul {
-  list-style-type: none;
-  padding-left: 0px;
+    ul {
+      list-style-type: none;
+      padding-left: 0px;
+    }
+
+    ul li {
+      background: var(--gradientStartEvenColor);
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+
+    ul li:nth-child(odd) {
+      background: var(--gradientStartOddColor);
+    }
+
+    ul li a {
+      color: var(--foregroundColor); /* Ensure links are white */
+      text-decoration: none; /* Remove underlines */
+    }
+
+    ul li a:hover {
+      color: var(--linkHoverColor); /* Use the new hover color */
+    }
+
+    .system-diagram {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .system-diagram object {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .content-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .left-column {
+      flex: 1;
+      margin-right: 20px;
+    }
+
+    .right-column {
+      flex: 0 0 0px; /* Adjust the width of the right column as needed */
+    }
+
+    .slideshow-container {
+  position: relative;
+  width: 600px; /* Fixed width */
+  height: 400px; /* Fixed height */
+  margin: auto;
+  overflow: hidden; /* Prevent any image overflow */
+  background-color: #000; /* Optional: Background color */
 }
 
-ul li {
-  background: var(--gradientStartEvenColor);
-  padding-top: 1px;
-  padding-bottom: 1px;
+
+    .slides {
+      display: none;
+    }
+
+    .slides img {
+  width: 100%; /* Fit the container's width */
+  height: 100%; /* Fit the container's height */
+  object-fit: cover; /* Scale image without cropping or overflowing */
+  background-color: #000; /* Fill empty spaces with a background */
 }
 
-ul li:nth-child(odd) {
-  background: var(--gradientStartOddColor);
-}
 
-ul li a {
-  color: var(--foregroundColor); /* Ensure links are white */
-  text-decoration: none; /* Remove underlines */
-}
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      margin-top: -22px;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+    }
 
-ul li a:hover {
-  color: var(--linkHoverColor); /* Use the new hover color */
-}
+    .next {
+      right: 0;
+      border-radius: 3px 0 0 3px;
+    }
 
-.system-diagram {
-  text-align: center;
-  margin-top: 2rem;
-}
+    .prev:hover, .next:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
 
-.system-diagram object {
-  width: 100%;
-  max-width: 600px;
-}
+      .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
 
-</style>
-  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
-    <style>
-object { width: 100%; }
-</style>
-    <div>
-      <h2>Departments</h2>
-      <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
+    @keyframes fade {
+      from {opacity: .4} 
+      to {opacity: 1}
+    }
+  </style>
+
+  <div class="content-container">
+    <div class="left-column">
+      <div class="section">
+        <div class="section-content">
+          <h2>Departments</h2>
+          <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-content">
+          <h2>Guides and Tutorials</h2>
+          <ul>{codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
+        </div>
+      </div>
     </div>
-    <div>
-      <h2>Guides and Tutorials</h2>
-      <ul>{codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
-      <div class="section system-diagram">
+
+    <div class="right-column">
+      <div class="section">
+        <div class="section-content">
+          <h2>Wall of Fame</h2>
+          <div class="slideshow-container">
+            <div class="slides fade">
+              <img src="/images/image1.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image2.jpeg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image3.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image4.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image5.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image6.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image7.jpg">
+            </div>
+            <div class="slides fade">
+              <img src="/images/image8.jpg">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section system-diagram">
     <h2>System Diagram</h2>
     <object type="image/svg+xml" data="/system diagram.svg"></object>
   </div>
+
+  <script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("slides");
+      if (n > slides.length) {slideIndex = 1}    
+      if (n < 1) {slideIndex = slides.length}
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+      }
+
+
+      slides[slideIndex-1].style.display = "block";  
+    }
+
+    // Optional: Enable autoplay
+    setInterval(() => {
+      plusSlides(1); // Go to the next slide every 5 seconds
+    }, 5000);
+
+    // Optional: Enable keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        plusSlides(-1);
+      } else if (e.key === 'ArrowRight') {
+        plusSlides(1);
+      }
+    });
+  </script>
 </Layout>
