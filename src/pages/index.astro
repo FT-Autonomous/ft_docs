@@ -29,6 +29,7 @@ import * as Theme from "../theme.ts";
       text-decoration: none;
     }
 
+<<<<<<< HEAD
     ul li a:hover {
       color: var(--linkHoverColor);
     }
@@ -344,4 +345,25 @@ import * as Theme from "../theme.ts";
       });
     }
 </script>
+=======
+ul li a:hover {
+  color: var(--linkHoverColor); /* Use the new hover color */
+}
+</style>
+  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+    <style>
+object { width: 100%; }
+</style>
+    <div>
+      <h2>Departments</h2>
+      <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
+    </div>
+    <div>
+      <h2>Guides and Tutorials</h2>
+      <ul>{codeEntries.map(e => (<li><a href={`/${e.slug}`}}>{e.data.title}</a></li>))}</ul>
+    </div>
+    <h2>System Diagram</h2>
+    <object type="image/svg+xml" data="/system diagram.svg"></object>
+    </div>
+>>>>>>> parent of 2bec55e (Functionality)
 </Layout>
