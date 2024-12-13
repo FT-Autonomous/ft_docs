@@ -45,6 +45,12 @@ import * as Theme from "../theme.ts";
     .content-container {
       display: flex;
       justify-content: space-between;
+      }
+
+    .right-column {
+      flex: 1; /* Adjust the width of the right column */
+      max-width: 600px; /* Set a maximum width for better layout */
+      padding: 10px;
     }
 
     .left-column {
@@ -52,64 +58,84 @@ import * as Theme from "../theme.ts";
       margin-right: 20px;
     }
 
-    .right-column {
-      flex: 0 0 0px; /* Adjust the width of the right column as needed */
+
+      .slideshow-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px; /* Adjust for a proportional size */
+      height: 400px; /* Fixed height */
+      margin: auto;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--gradientStartOddColor);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     }
-
-    .slideshow-container {
-  position: relative;
-  width: 600px; /* Fixed width */
-  height: 400px; /* Fixed height */
-  margin: auto;
-  overflow: hidden; /* Prevent any image overflow */
-  background-color: #000; /* Optional: Background color */
-}
-
 
     .slides {
       display: none;
+      position: relative;
+      height: 100%;
     }
 
+
     .slides img {
-  width: 100%; /* Fit the container's width */
-  height: 100%; /* Fit the container's height */
-  object-fit: cover; /* Scale image without cropping or overflowing */
-  background-color: #000; /* Fill empty spaces with a background */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #000;
 }
 
+    .caption {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: var(--foregroundColor);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+    }
 
     .prev, .next {
       cursor: pointer;
       position: absolute;
       top: 50%;
       width: auto;
-      padding: 16px;
-      margin-top: -22px;
-      color: white;
+      padding: 10px;
+      color: var(--foregroundColor);
       font-weight: bold;
       font-size: 18px;
-      transition: 0.6s ease;
-      border-radius: 0 3px 3px 0;
       user-select: none;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .prev {
+      left: 10px;
     }
 
     .next {
-      right: 0;
-      border-radius: 3px 0 0 3px;
+      right: 10px;
     }
 
     .prev:hover, .next:hover {
-      background-color: rgba(0,0,0,0.8);
+      background-color: rgba(0, 0, 0, 0.8);
     }
 
-      .fade {
-      animation-name: fade;
-      animation-duration: 1.5s;
-    }
-
-    @keyframes fade {
-      from {opacity: .4} 
-      to {opacity: 1}
+    .progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background-color: var(--linkHoverColor);
+      width: 0;
+      transition: width 5s linear;
     }
   </style>
 
@@ -136,33 +162,41 @@ import * as Theme from "../theme.ts";
           <h2>Wall of Fame</h2>
           <div class="slideshow-container">
             <div class="slides fade">
-              <img src="/images/image1.jpg">
+              <img src="/images/image1.jpg" alt="Image 1">
+              <div class="caption">Caption for Image 1</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image2.jpeg">
+              <img src="/images/image2.jpeg" alt="Image 2">
+              <div class="caption">Caption for Image 2</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image3.jpg">
+              <img src="/images/image3.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 3</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image4.jpg">
+              <img src="/images/image4.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 4</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image5.jpg">
+              <img src="/images/image5.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 5</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image6.jpg">
+              <img src="/images/image6.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 6</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image7.jpg">
+              <img src="/images/image7.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 7</div>
             </div>
             <div class="slides fade">
-              <img src="/images/image8.jpg">
+              <img src="/images/image8.jpg" alt="Image 3">
+              <div class="caption">Caption for Image 8</div>
             </div>
+            <div class="progress-bar"></div>
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
             <a class="next" onclick="plusSlides(1)">&#10095;</a>
           </div>
-          <br>
         </div>
       </div>
     </div>
@@ -179,31 +213,31 @@ import * as Theme from "../theme.ts";
 
     function plusSlides(n) {
       showSlides(slideIndex += n);
-    }
-
-    function currentSlide(n) {
-      showSlides(slideIndex = n);
+      resetProgressBar();
     }
 
     function showSlides(n) {
-      let i;
-      let slides = document.getElementsByClassName("slides");
-      if (n > slides.length) {slideIndex = 1}    
-      if (n < 1) {slideIndex = slides.length}
-      for (i = 0; i < slides.length; i++) {
-        slides[i].style.display = "none";  
+      const slides = document.getElementsByClassName("slides");
+      if (n > slides.length) { slideIndex = 1; }
+      if (n < 1) { slideIndex = slides.length; }
+      for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
       }
-
-
-      slides[slideIndex-1].style.display = "block";  
+      slides[slideIndex - 1].style.display = "block";
     }
 
-    // Optional: Enable autoplay
+    function resetProgressBar() {
+      const progressBar = document.querySelector('.progress-bar');
+      if (progressBar) {
+        progressBar.style.width = '0';
+        setTimeout(() => progressBar.style.width = '100%', 50);
+      }
+    }
+
     setInterval(() => {
-      plusSlides(1); // Go to the next slide every 5 seconds
+      plusSlides(1);
     }, 5000);
 
-    // Optional: Enable keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         plusSlides(-1);
