@@ -22,6 +22,7 @@ a:hover {
 ul {
   list-style-type: none;
   padding: 0;
+  padding-left: 0px;
 }
 
 li {
@@ -35,20 +36,49 @@ li a, .dropdown span {
   text-decoration: none; /* Remove underlines */
 }
 
+.left li {
+  text-align: right;
+}
+
+ul li {
+  background: var(--gradientStartEvenColor);
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+ul li:nth-child(odd) {
+  background: var(--gradientStartOddColor);
+}
+
+ul li a {
+  color: var(--foregroundColor); /* Ensure links are white */
+  text-decoration: none; 
+}
+
+ul li a:hover {
+  color: var(--linkHoverColor); /* Use the new hover color */
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f9f9f9;
+  background-color: var(--backgroundColor);
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  padding-left: 20px;
 }
 
 .dropdown-content a {
   color: var(--foregroundColor);
-  padding: 12px 16px;
+  padding: 5px 0;
   text-decoration: none; /* Remove underlines */
   display: block;
+  text-decoration: underline; /* Underlined links */
+}
+
+.dropdown-content a:hover {
+  color: var(--linkHoverColor);
 }
 
 .dropdown:hover .dropdown-content {
@@ -77,4 +107,25 @@ footer {
   text-align: center;
   padding: 1rem;
   border-top: 2px solid var(--foregroundColor);
+}
+
+.dropdown-button::before {
+  content: "▸";
+  padding-right: 0.5em;
+}
+
+.show::before {
+  content: "▼";
+}
+
+.dropdown-button {
+  cursor: pointer;
+  color: var(--linkColor);
+  position: relative;
+}
+
+.dropdown-button:hover { color: var(--linkHoverColor) }
+.show ~ .dropdown-content {
+  display: block;
+  animation: ease-in 1s;
 }

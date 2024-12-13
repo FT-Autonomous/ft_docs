@@ -28,7 +28,7 @@ ul li:nth-child(odd) {
 
 ul li a {
   color: var(--foregroundColor); /* Ensure links are white */
-  text-decoration: none; /* Remove underlines */
+  text-decoration: none; /* Underlined links */
 }
 
 ul li a:hover {
@@ -45,7 +45,7 @@ ul li a:hover {
   color: var(--foregroundColor);
   padding: 5px 0;
   display: block;
-  text-decoration: none; /* Remove underlines */
+  text-decoration: none; /* Underlined links */
 }
 
 .dropdown-content a:hover {
@@ -77,11 +77,16 @@ ul li a:hover {
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.dropdown-button').forEach(button => {
     button.addEventListener('click', event => {
+      const target = event.target as HTMLButtonElement;
+      const isActive = target.classList.contains('show');
       // Close all dropdowns
       document.querySelectorAll('.dropdown-button').forEach(content => {
         content.classList.remove('show');
       });
-      (event.target as HTMLButtonElement).classList.toggle('show');
+      // Toggle the clicked dropdown
+      if (!isActive) {
+        target.classList.toggle('show');
+      }
     });
   });
 });

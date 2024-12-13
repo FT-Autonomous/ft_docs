@@ -34,15 +34,12 @@ import * as Theme from "../theme.ts";
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid var(--foregroundColor);
+        border-bottom: 1px solid #CCCCCC;
       }
       header a {
-        color: var(--foregroundColor); /* Always white */
-        text-decoration: none; /* Remove underlines */
+        color: var(--foregroundColor);
+        text-decoration: none;
         font-size: 1.5rem;
-      }
-      header a:hover {
-        color: var(--linkHoverColor); /* Use the new hover color */
       }
       .two-panel-layout {
         display: flex;
@@ -52,6 +49,7 @@ import * as Theme from "../theme.ts";
         max-width: 200px;
         padding: 1rem;
         background-color: var(--gradientStartEvenColor);
+        border-right: 1px solid #CCCCCC;
       }
       .content {
         flex: 1;
@@ -62,7 +60,11 @@ import * as Theme from "../theme.ts";
         color: var(--foregroundColor);
         text-align: center;
         padding: 1rem;
-        border-top: 2px solid var(--foregroundColor);
+        border-top: 1px solid #CCCCCC;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Arial', sans-serif;
+        color: var(--foregroundColor);
       }
     </style>
   </head>
