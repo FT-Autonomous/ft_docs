@@ -37,9 +37,11 @@ rviz2 -d ~/.rviz2/myConfig.rviz
 
 The following outlines the steps one would take to visualise most of the topics that are relevant to understanding the stack.
 
-- Set fixed frame to `velodyne` and set target frame to `velodyne` also.
-- Add `PointCloud2` topic with name `/velodyne_points`. Set size to `0.05` squares.
-- Add `ConeArrayWithCovariance` topic with name `/cones`.
-- Add `ConeArrayWithCovariance` topic with name `/map`. Set color display mode to `gray`.
-- Add `WaypointsArrayStamped` topic with the name `/trajectory`.
+- Set fixed frame to `odom` and set target frame to `odom` also.
+- Add a `PointCloud2` on `/velodyne_points`. Set size to `0.05` squares.
+- Add a `ConeArrayWithCovariance` on `/cones`.
+- Add a `ConeArrayWithCovariance` on `/map`. Set color display mode to `gray`.
+- Add a `WaypointsArrayStamped` on  `/trajectory`.
+- Add a `Path` topic on `/zed/zed_node/path_odom`
+- Add a `Camera` topic on `/zed/zed_node/left/image_rect_color`
 
