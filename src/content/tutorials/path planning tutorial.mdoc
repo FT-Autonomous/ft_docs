@@ -4,6 +4,8 @@ title: ROS Path Planning Tutorial
 
 ## ROS Path Planning Tutorial
 
+### Cloning our Repository
+
 First of all, set up your github account on the FTA PC.  This can be done using the command.
 
 ```bash
@@ -27,6 +29,8 @@ git clone --recuse-submodules git@github.com:FT-Autonomous/FT-FSAI-23
 ```
 
 If you get an error complaining that the repository doesn’t exist, you may not be a member of the GitHub organisation, so ask somebody to add you.
+
+### Getting Set Up for ROS Development
 
 After that you need to make sure that you have ROS2 sourced in your terminal environment. If it is not already present, add the following line to your `~/.bashrc` file.
 
@@ -58,13 +62,13 @@ cd ~/ft
 
 The dot in bash is similar to the import statement in python. Once you have used that command, you should try to run the simulator. You will need to source the contents of the \`\~/ft\` workspace every time you want to run the simulator.
 
-	Pro Tip: You can shorten this by adding the following command to your `~/.bashrc`. It defines a `.w` command that navigates to your workspace and imports all dependencies in one command.
+Pro Tip: You can shorten this by adding the following command to your `~/.bashrc`. It defines a `.w` command that navigates to your workspace and imports all dependencies in one command.
 
 ```bash
 alias .w='cd ~/ft ; . install/setup.bash'
 ```
 
-	Pro Tip: If you get an EUFS\_MASTER error, just close the terminal, open it again and ‘cd’ back into ft. That should solve the error.
+Pro Tip: If you get an EUFS\_MASTER error, just close the terminal, open it again and ‘cd’ back into ft. That should solve the error.
 
 ```bash
 ros2 launch eufs_launcher eufs_launcher.launch.py
@@ -85,6 +89,8 @@ What is a ROS topic? ROS topics are like TV channels carrying a stream of messag
 ```bash
 ros2 interface show eufs_msgs/msg/ConeArrayWithCovariance
 ```
+
+### Making a ROS Node
 
 With this information, we can start writing python code to interface with the ROS topics. The first step is to create a new ROS2 python project to store the code. This can be done using the following command (make sure that you run this in the \~/ft folder):
 
@@ -180,7 +186,7 @@ After saving this file, run `ros2 run ft_path_planning ros` once more. Running i
 
 You can type in `exit()` to leave the debugger or use `Ctrl+D`.
 
-## What does RVIZ code look like?
+### RVIZ Example
 
 Place the following code in the `ros.py` file that you created in the path planning package:
 
