@@ -19,7 +19,9 @@ Link to the Tutorials
 [Tutorials — ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/Tutorials.html)  
 *NOTE: At the time of writing (17th August 2024), ROS 2 Galactic is the version used in the stack.*
 
-## Some Useful ROS2 Command Line (CLI) Commands
+## The ROS2 Command Line Interface (CLI)
+
+Here are some useful ROS2 CLI commands.
 
 `ros2 topic list` … lists all the topics that are being subscribed to and published
 
@@ -41,18 +43,33 @@ Link to the Tutorials
 
 Note: Don’t include the angle brackets in the command. That just indicates you need to replace it with a valid argument.
 
-## Extra
+### Extra
 
-### ROS\_DOMAIN\_ID
+ROS by default publishes all messages to the network. Without any mechanism for segregating the network out into disjoint units, it would become crowded and isolated testing would become impossible. ROS provides the concept of "domains" to manage this. A domain is represented by a number or an index. Setting the domain scopes topics to that domain, meaning that subscribers will only be able to detect topics published by nodes in the same domain, allowing the network to be segregated.
 
-[The ROS\_DOMAIN\_ID — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html)
+Generally, you can just keep your domain as the default value, which is ~0~. Unless you are explicitly doing advanced stuff over the network, ROS domains don't matter much.
 
-### TF2
+Read more about domains here:
 
-[About tf2 — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Tf2.html)
-
-[An article on tf2 in the context of Formula Trinity](/tf2)
+- [The ROS\_DOMAIN\_ID — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html)
 
 ### ROS Services
 
 [Understanding services — ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Services/Understanding-ROS2-Services.html)  
+
+
+## Other ROS2 Components
+
+### TF2
+
+TF2 is a ROS library for managing coordinate frames and translating between them.
+
+- [About tf2 — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Tf2.html)
+- [An article on tf2 in the context of Formula Trinity](/tf2)
+
+### RVIZ
+
+RVIZ is a program used to visualise the state of a robotics system.
+
+- [The official RVIZ2 article](https://docs.ros.org/en/humble/Tutorials/Intermediate/RViz/RViz-User-Guide/RViz-User-Guide.html)
+- [An article on rviz2 in the context of Formula Trinity](/rviz)
