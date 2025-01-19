@@ -1,0 +1,101 @@
+---
+title: The ZED2 Camera
+---
+
+## The ZED2
+
+The ZED2 is the main camera we use. In addition to being a camera, it has sensors as an IMU, gyroscope, magnetometer and other sensors. The ZED2 is also capable of producing a pose estimate of where it is in the world using the aforementioned sensors.
+
+{% image src="https://www.stereolabs.com/docs/api/ZED-2-front.webp" alt="ZED2 IMAGE" /%}
+
+Some links:
+
+- [ZED2 schematic](https://static.generation-robots.com/media/zed-2i-technical-drawings.pdf) - Technical drawings of the ZED2.
+- [ZED2 homepage](https://www.stereolabs.com/en-ie/products/zed-2) - Pricing and propaganda information.
+- [ZED2 datasheet](https://www.generationrobots.com/media/zed2-camera-datasheet.pdf) - Outlines a number of the ZED2 specs.
+
+The SDK you use to interface directly with the ZED2 is called the stereolabs SDK.
+
+- [Stereolabs Python SDK](https://www.stereolabs.com/docs/api/python)
+- [Stereolabs C++ SDK](https://www.stereolabs.com/docs/api)
+
+### Using the ZED2
+
+#### Compiling the ZED ROS2 Wrapper
+
+The ZED ROS2 Wrapper is a suite of packages that make the sensors on the ZED2 available through a ROS2 interface. The following is a guide on how to compile these packages. The wrapper requires an NVIDIA GPU to operate -- the following is not applicable to platforms that don't have an NVIDIA GPU or whose drivers aren't working.
+
+If you are using a shared platform such as the Jetson somebody has probably compiled the wrapper already. In this case you can skip to the sourcing step. Otherwise you can continue.
+
+As prerequisites, in addition `ros-humble desktop`, you must install the fllowing packages:
+
+```
+ros-humble-nmea-msgs
+ros-humble-geographic-msgs
+ros-humble-diagnostic-updater
+ros-humble-robot-localization
+ros-humble-xacro
+```
+
+Clone the github repository [ZED2 ROS Wrapper](https://github.com/stereolabs/zed-ros2-wrapper) as follows:
+
+```
+git clone --recurse-submodules https://github.com/stereolabs/zed-ros2-wrapper
+```
+
+**Note**: If you are still using ROS2 galactic, comment out the lines in `zed_camera_component.cpp` that trigger an error if the ROS version is not `IRON` or `HUMBLE` or `FOXY`. As of \[2024-01-21 Sun\], the main branch on github compiles fine under galactic. Otherwise, you can ignore this disclaimer.
+
+Navigate to the `zed-ros2-wrapper` folder and execute:
+
+```
+. /opt/ros/galactic/setup.bash
+colcon build --symlink-install
+```
+
+#### Sourcing
+
+Like any other ROS workspace, the ZED ROS2 wrapper packages are brought into scope by navigating to the folder where they were built (such as `~/zed-ros2-wrapper` or `~/ft/zed-ros2-wrapper`) and sourcing the setup script.
+
+```
+. install/setup.sh
+```
+
+#### Running the ZED2 ROS wrapper
+
+After sourcing, you can run the wrapper as follows:
+
+```
+ros2 launch zed_wrapper zed2.launch.py camera_model:=zed2
+```
+
+Use `ros2 topic list` to explore the topics being published and use `ros2 topic info TOPIC` to view information about the topic types. To view information about a ROS2 topic type, use `ros2 interface show INTERFACE`.
+
+#### Multi Camera Setup
+
+the `zed2.launch.py` script takes as arguments `camera_name` and `serial_number` which are relevant in a multi camera setup.
+
+```
+'camera_name':
+        The name of the camera. It can be different from the camera model and it
+        will be used as node `namespace`.
+        (default: 'zed')
+```
+
+```
+'serial_number':
+        The serial number of the camera to be opened. It is mandatory to use this
+        parameter in multi-camera rigs to distinguish between different cameras.
+        (default: '0')
+```
+
+The zed2 with the sticker has serial number is `25382294` and the zed2 without a sticker is `23038477`. So essentially, in two separate terminals, you execute the zed ros2 wrapper as:
+
+```
+ros2 launch zed_wrapper zed2.launch.py camera_name=zedA serial_number:=25382294
+```
+
+and
+
+```
+ros2 launch zed_wrapper zed2.launch.py camera_name=zedB serial_number:=23038477
+```

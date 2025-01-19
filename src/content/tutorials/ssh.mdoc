@@ -1,0 +1,32 @@
+---
+title: General SSH Resources
+---
+
+## General SSH Resources
+
+### Copying Files
+
+You can use rsync to copy files to or from an SSH target.
+
+- [Archwiki entry on rsync](https://wiki.archlinux.org/title/Rsync#As_cp/mv_alternative)
+- [USAGE section of the `rsync` manpage](https://man.archlinux.org/man/rsync.1.html#USAGE)
+
+### X11 Forwarding
+
+It's possible for graphics to be done over SSH though it's extremely slow ([and also insecure!](https://security.stackexchange.com/questions/14815/security-concerns-with-x11-forwarding)). You can do it with the following command:
+
+```
+ssh -XY TARGET
+```
+
+Runing graphical applications on your laptop will then open windows on your computer, provided you are using WSL, are on Linux or are on MacOS with some X11 server running. Only use this technique with trusted servers.
+
+### Passwordless Authentication
+
+If you have an SSH key set up on your comptuer, you can configure SSH targets to accept that key instead of a password for authentication. To do this, first get the public key of your SSH key. This is done using the `ssh-add -L` command. The output should be somthing like the following:
+
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDlLErR2WXcmG0mKqwDXwzLe1Gq7jfGU3O5+csrXtKCCoJzghIcHO6zWdPoInPiNRGB6wX8qdL4jyfF/D1h9hWv9n6iNnshkFgLAy5EpVPq9ug7A2XUY5Esm8ajo0ryG6zNS/1A9MozvxmjBx1BUgGyVs5pstlSK7FckoIxhIbsc0Pf5juejGUasP02iZ7HlhYvl9jdXQCIcY+f6lu/WsycDHDAxL27URUldt4r5hY5eQVUT/cPpuksXHBxjVKOYul4KLTWA4dLWb46Kh9/Tn0hS8qInYTZQJzR5MQWnyIvQIr180HmfIat7s/24L4F/hy4YchaWebUM3npzLMRDYXvJyYKZKQ1qQZjhfMOwNUHIqsB724R3otiU6eW8GcThHhXVkBKhi5OPcBdU0DNUPJMFIKky9S+lTeTxQiwn6JW+wV7wKo+AqEsiEcLp4MZg7U/pM62/TZUXUvhDcLbo5pNqHCF6pVIae8wXJjq6AzT4VOSLkM+w3qJUnDAQjAHBFdZ18hNP2qm1TYlzX0gI8uVs0TpcQB6bNo6R9MjbtbSl/K4tKpmD/6BFKBU+v8WmsG7pszJq6p8iAYSkwIf/PjXTgS9sc4uCIlo/2kk1qvKhf/UMu/x/9aTYrzOWkyj6zAHasfUXYTBJn778v8Tln4lpWTmtOUbgrZlHThNkareqw== (none)
+```
+
+You then want to navigate to the remote host (for example, macneill or the FTA PC) and add this as an entry in the `~/.ssh/authorized_keys` file.

@@ -8,6 +8,7 @@ title: Documentation Best Practices
 
 - Go through the tutorial in full at least once before publishing.
 - If possible, do this process with at least one person and incorporate their issues and questions in the tutorial.
+- If giving a template shell script, try to avoid using template specifiers that will wreak havoc when copy pasted, as things will inevitably be copy pasted. As an example, I'd advise against something like `cat <file name>` which may trigger indirection, I'd simply use `cat FILE-NAME` or `cat FILE_NAME`.
 
 ### Keeping Documentation up to Date
 
