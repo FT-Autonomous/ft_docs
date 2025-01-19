@@ -1,0 +1,67 @@
+---
+/* This component defines a nav bar primarilly meant for mobile that will position itself below the header tag */
+import LeftNavBar from "../components/LeftNavBar.astro";
+import * as Theme from "../theme.ts";
+---
+<style define:vars={ Theme }>
+  .hovering-nav-bar {
+    float: left;
+    background-color: var(--backgroundColor);
+    border: 2px solid white;
+    border-radius: 20px;
+    margin-left: 10px;
+    max-height: 600px;
+    overflow: scroll;
+    padding: 1em;
+  }
+    
+  .menu-button {
+    float: right;
+    margin-right: 20px;
+    font-size: 40px;
+    /* https://stackoverflow.com/questions/2310734/how-to-make-html-text-unselectable */
+    user-select: none;
+    cursor: pointer;
+    background-color: var(--backgroundColor);
+    border: 2px solid white;
+    border-radius: 900px;
+    /* https://stackoverflow.com/questions/29980387/how-to-make-a-circle-around-a-letter */
+    width: 1.2em;
+    height: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+  }
+
+  .stay-at-top-of-screen {
+    position: sticky;
+    top: 10px;
+  }
+
+  .float-over-children {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+  }
+</style>
+
+<div class="stay-at-top-of-screen">
+  <div class="float-over-children">
+    <span class="menu-button">≡</span>
+    <div class="mobile-layout hovering-nav-bar hidden">
+      <LeftNavBar/>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  let hoveringNavBar = document.querySelector('.hovering-nav-bar')!;
+  let menuButton = document.querySelector('.menu-button')!;
+  document.addEventListener('click', () => hoveringNavBar.classList.add('hidden'));
+  hoveringNavBar.addEventListener('click', event => event.stopPropagation());
+  menuButton.addEventListener('click', event => {
+    hoveringNavBar.classList.toggle('hidden')
+    event.stopPropagation();
+  });
+})
+</script>

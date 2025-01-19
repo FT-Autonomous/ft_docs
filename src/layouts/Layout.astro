@@ -1,6 +1,7 @@
 ---
 import { UserButton } from "@clerk/astro/components";
 import LeftNavBar from "../components/LeftNavBar.astro";
+import MobileNavBar from "../components/MobileNavBar.astro";
 import Authenticated from "./Authenticated.astro";
 import Identity from "./Identity.astro";
 
@@ -21,6 +22,13 @@ import * as Theme from "../theme.ts";
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <style define:vars={ Theme }>
+      
+      :global(.hidden) { display: none; }
+      
+      /* https://stackoverflow.com/questions/248011/how-do-i-wrap-text-in-a-pre-tag#248013 */
+      :global(pre) {
+        white-space: pre-wrap;
+      }
       body {
         background-color: var(--backgroundColor);
         color: var(--foregroundColor);
@@ -65,6 +73,21 @@ import * as Theme from "../theme.ts";
         padding: 1rem;
         border-top: 2px solid var(--foregroundColor);
       }
+      
+      :global(img) {
+        max-width: 100%;
+      }
+
+      @media (max-width: 480px) {
+        .mobile-layout { display: default; }
+        .two-panel-layout { display: none; }
+        :global(h2) { max-width: 85%; }
+      }
+
+      @media (min-width: 481px) {
+        .mobile-layout { display: none; }
+        .two-panel-layout { display: default; }
+      }
     </style>
   </head>
   <body>
@@ -73,6 +96,14 @@ import * as Theme from "../theme.ts";
       <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} />
     </header>
     <AuthBarrier>
+      
+      <!-- if the screen is not enough we use the mobile layout -->
+      <div class="mobile-layout">
+        {(includeNavBar ?? true) ? <MobileNavBar/> : ""}
+        <slot/>
+      </div>
+      
+      <!-- if the screen is big enough we use a two panel layout -->
       <div class="two-panel-layout">
         {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
         <div class="content">
