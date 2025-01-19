@@ -22,12 +22,14 @@ import * as Theme from "../theme.ts";
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <style define:vars={ Theme }>
-      
       :global(.hidden) { display: none; }
       
       /* https://stackoverflow.com/questions/248011/how-do-i-wrap-text-in-a-pre-tag#248013 */
       :global(pre) {
         white-space: pre-wrap;
+        /* background-color: var(--secondaryBackgroundColor); */
+        border: 1px solid white;
+        padding: 5px;
       }
       body {
         background-color: var(--backgroundColor);
@@ -45,6 +47,11 @@ import * as Theme from "../theme.ts";
         align-items: center;
         border-bottom: 2px solid var(--foregroundColor);
       }
+      
+      :global(a) { color: var(--foregroundColor); }
+      :global(a:visited) { color: var(--linkVisitedColor); }
+      :global(a:hover) { color: var(--linkHoverColor); }
+      
       header a {
         color: var(--foregroundColor); /* Always white */
         text-decoration: none; /* Remove underlines */
@@ -60,7 +67,6 @@ import * as Theme from "../theme.ts";
         min-width: 200px;
         max-width: 200px;
         padding: 1rem;
-        background-color: var(--gradientStartEvenColor);
       }
       .content {
         flex: 1;
