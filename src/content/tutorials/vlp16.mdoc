@@ -32,13 +32,13 @@ colcon build --symlink-install
 . install/setup.bash
 ```
 
-You then want to power the LiDAR on, plug everything in and set up the network (see below). 
+Power the LiDAR using the DC jack and connect the LiDAR to the host computer using ethernet.
 
 #### Setting up the Network
 
 Note that this section was derived from the manual. If anything here doesn't work, refer to the manual for further clarification.
 
-In the terminal run the following command to set up the network:
+To set up the network, run the following command in the terminal to start the NetworkManager connection editor.
 
 ```
 nm-connection-editor
@@ -46,9 +46,9 @@ nm-connection-editor
 
 There may already be a "Velodyne" ethernet connection in NetworkManager, if so, skip to the activation step.
 
-If not, you will need to create a new connection, by clicking the `+` button in the bottom left corner. Select `Ethernet` from the dropdown menu and click `Create`. Name the connection as "Velodyne" and then navigate to the "IPv4 Settings" tab. Now we need to add the addresses for it by clicking `Add`. Give the velodyne static ip as "192.168.1.200". Set the mask as "255.255.255.0" and the gateway as "255.255.255.255"
+If not, you will need to create a new connection, by clicking the `+` button in the bottom left corner. Select `Ethernet` from the dropdown menu and click `Create`. Name the connection as "Velodyne" and then navigate to the "IPv4 Settings" tab. Now we need to add the addresses for it by clicking `Add`. Give the velodyne static ip as `192.168.1.200`. Set the subnet mask as `255.255.255.0` and the gateway as `255.255.255.255`.
 
-Once the network has been set up, the Velodyne can be configured in a web console made available by typing the IP address  "192.168.1.201" on a web browser. (yes, this is different from the IP address assigned to the network interface).
+Once the network has been set up, the Velodyne can be configured in a web console made available by typing the IP address `192.168.1.201` on a web browser. (yes, this is different from the IP address assigned to the network interface).
 
 #### Activating the Velodyne Network
 
@@ -64,7 +64,7 @@ Run the command `ip -br a` to verify that the network interface corresponding to
 
 First, verify that the velodyne is actually turned on. You should hear a dim continuous hum from the velodyne coming from the internal motor that spins the laser. Additionally, when you place your hand on the velodyne you should feel a continous vibration.
 
-If the network interface is down most of the time but it is spinning, you may have a hardware fault. One of the most frequent issues we have with out LiDAR is that the wires inside the interface box come loose. You can open the interface box and check the wires to see if they are connected properly. if they are not connected properly, you can try reconnecting them. Make sure the power is off before you do this!.     
+If the network interface is down most of the time but it is spinning, you may have a hardware fault. One of the most frequent issues we have with out LiDAR is that the wires inside the interface box come loose. You can open the interface box and check the wires to see if they are connected properly. if they are not connected properly, you can try reconnecting them. Make sure the power is off before you do this!.
 
 #### Running the Velodyne
 
