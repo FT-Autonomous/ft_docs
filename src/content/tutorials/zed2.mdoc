@@ -30,11 +30,7 @@ If you are using a shared platform such as the Jetson somebody has probably comp
 As prerequisites, in addition `ros-humble desktop`, you must install the fllowing packages:
 
 ```
-ros-humble-nmea-msgs
-ros-humble-geographic-msgs
-ros-humble-diagnostic-updater
-ros-humble-robot-localization
-ros-humble-xacro
+ros-humble-nmea-msgs ros-humble-geographic-msgs ros-humble-diagnostic-updater ros-humble-robot-localization ros-humble-xacro
 ```
 
 Clone the github repository [ZED2 ROS Wrapper](https://github.com/stereolabs/zed-ros2-wrapper) as follows:
@@ -45,19 +41,26 @@ git clone --recurse-submodules https://github.com/stereolabs/zed-ros2-wrapper
 
 **Note**: If you are still using ROS2 galactic, comment out the lines in `zed_camera_component.cpp` that trigger an error if the ROS version is not `IRON` or `HUMBLE` or `FOXY`. As of \[2024-01-21 Sun\], the main branch on github compiles fine under galactic. Otherwise, you can ignore this disclaimer.
 
-Navigate to the `zed-ros2-wrapper` folder and execute:
+Navigate to the `zed-ros2-wrapper` folder and build:
 
 ```
-. /opt/ros/galactic/setup.bash
+. /opt/ros/humble/setup.bash
 colcon build --symlink-install
+. install/setup.bash
 ```
 
-#### Sourcing
+#### Ensuring You Have Access to the Camera Device
 
-Like any other ROS workspace, the ZED ROS2 wrapper packages are brought into scope by navigating to the folder where they were built (such as `~/zed-ros2-wrapper` or `~/ft/zed-ros2-wrapper`) and sourcing the setup script.
+First you need to ensure that you have access to the camera device. On linux, cameras are represented on the filesystem through the files `/dev/videoN` (where `N` is a number). By default, these are owned by the `root` user and the `video` group. You can check what groups your current user is in using the `groups` command. If you are not in the `video` group, add yourself to the group using the following command, replacing `USER` with your username.
 
 ```
-. install/setup.sh
+sudo usermod -aG video USER
+```
+
+Another quick fix to this issue is simply changing the permissions on the video files such that everybody can access those files:
+
+```
+sudo chmod a+rw /dev/video*
 ```
 
 #### Running the ZED2 ROS wrapper
@@ -70,7 +73,17 @@ ros2 launch zed_wrapper zed2.launch.py camera_model:=zed2
 
 Use `ros2 topic list` to explore the topics being published and use `ros2 topic info TOPIC` to view information about the topic types. To view information about a ROS2 topic type, use `ros2 interface show INTERFACE`.
 
-#### Multi Camera Setup
+##### Visualising the Camera Output
+
+{% image src="https://github.com/stereolabs/zed-ros2-wrapper/raw/master/images/sim_rviz.jpg" width="450px" /%}
+
+Source your ROS workspace. Then download [this example RVIZ config](https://github.com/stereolabs/zed-ros2-examples/blob/master/zed_display_rviz2/rviz2/zed_stereo.rviz) and then run the following:
+
+```
+rviz2 -d zed_stereo.rviz
+```
+
+##### Multi Camera Setup
 
 the `zed2.launch.py` script takes as arguments `camera_name` and `serial_number` which are relevant in a multi camera setup.
 

@@ -4,58 +4,61 @@ title: General ROS2 Resources
 
 ## Introduction
 
-[What Is ROS2? - Framework Overview](https://www.youtube.com/watch?v=7TVWlADXwRw)  
+[What Is ROS2? - Framework Overview](https://www.youtube.com/watch?v=7TVWlADXwRw).
+
 The YouTube video above gives a great overview of ROS 2 features & functionality. Use the ROS 2 galactic documentation in the next section to practice using ROS 2 in either Python / C++.
 
-## Link to Official ROS 2 Galactic Documentation
+## Link to Official ROS 2 Humble Documentation
 
-Documentation home page  
-[ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/index.html)
+Documentation home page [ROS 2 Documentation: Humble documentation](https://docs.ros.org/en/humble/index.html).
 
-Link to Installation Instructions  
-[Installation — ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/Installation.html)
+Link to Installation Instructions [Installation — ROS 2 Documentation: Humble documentation](https://docs.ros.org/en/humble/Installation.html).
 
-Link to the Tutorials  
-[Tutorials — ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/Tutorials.html)  
-*NOTE: At the time of writing (17th August 2024), ROS 2 Galactic is the version used in the stack.*
+Link to the Tutorials [Tutorials — ROS 2 Documentation: Humble documentation](https://docs.ros.org/en/humble/Tutorials.html).
+
+## Building ROS2 Packages
+
+It's *essential* that you understand the concept of workspaces, underlays and overlays.
+
+- Read about these concepts [on the official ROS2 wiki](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#basics).
+
+The command `colcon build` is used to build colcon packages. *You should always be concious of the workspace folder you're building in*. Generally this will be the `~/ft/` folder unless you are explicitly doing some experimental work elsewhere.
+
+When you run `colcon build`, the ROS2 build system will traverse the file system recursively, find all packages, and compile all packages that have changed or have not been compiled. Packages are identified by folders that contain a `package.xml` file. Nested packaging is not allowed, i.e. packages cannot contain sub-packages.
+
+```
+. /opt/ros/humble/setup.bash
+colcon build --symlink-install
+. install/setup.bash
+```
 
 ## The ROS2 Command Line Interface (CLI)
 
 Here are some useful ROS2 CLI commands.
 
-`ros2 topic list` … lists all the topics that are being subscribed to and published
-
-`ros2 topic echo </topic>` … displays the messages published to that topic
-
-`ros2 topic hz </topic>` … shows the publishing rate of the topic
-
-`ros2 topic info </topic>` .… shows information about a topic
-
-`ros2 bag play <some_bag.db3>`... play a bag
-
-`ros2 bag play <some_bag.db3> --loop` … if you want the bag to keep playing on loop
-
-`ros2 run <package_name> <executable_name>`... runs an executable from a package. For example, `ros2 run slam slam_node` launches the `slam_node` node in the slam package. The other node in the slam is the `plotter` node.   
-    
-`ros2 launch <package_name> <launch_file_name>`... runs the specified launch file. For example, `ros2 launch slam slam.launch.py`
-
-`ros2 run rqt_reconfigure rqt_reconfigure`... opens a Graphical User Interface (GUI) for dynamic reconfiguration of running ROS 2 nodes. This interface enables viewing and modifying node parameters in real time without restarting the nodes.
-
-Note: Don’t include the angle brackets in the command. That just indicates you need to replace it with a valid argument.
+- `ros2 topic list` … lists all the topics that are being subscribed to and published.
+- `ros2 topic echo TOPIC` … displays the messages published to that topic.
+- `ros2 topic hz TOPIC` … shows the publishing rate of the topic.
+- `ros2 topic info TOPIC` … shows information about a topic.
+- `ros2 bag play SOME_BAG` … play a bag.
+- `ros2 bag play SOME_BAG --loop`  … if you want the bag to keep playing on loop.
+- `ros2 run PACKAGE_NAME EXECUTABLE_NAME` … runs an executable from a package. For example, `ros2 run slam slam_node` launches the `slam_node` node in the slam package. The other node in the slam is the `plotter` node.
+- `ros2 launch PACKAGE_NAME LAUNCH_FILE_NAME` … runs the specified launch file. For example, `ros2 launch slam slam.launch.py`.
+- `ros2 run rqt_reconfigure rqt_reconfigure` … opens a Graphical User Interface (GUI) for dynamic reconfiguration of running ROS 2 nodes. This interface enables viewing and modifying node parameters in real time without restarting the nodes.
 
 ### Extra
 
 ROS by default publishes all messages to the network. Without any mechanism for segregating the network out into disjoint units, it would become crowded and isolated testing would become impossible. ROS provides the concept of "domains" to manage this. A domain is represented by a number or an index. Setting the domain scopes topics to that domain, meaning that subscribers will only be able to detect topics published by nodes in the same domain, allowing the network to be segregated.
 
-Generally, you can just keep your domain as the default value, which is ~0~. Unless you are explicitly doing advanced stuff over the network, ROS domains don't matter much.
+Generally, you can just keep your domain as the default value, which is `0`. Unless you are explicitly doing advanced stuff over the network, ROS domains don't matter much.
 
 Read more about domains here:
 
-- [The ROS\_DOMAIN\_ID — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Domain-ID.html)
+- [The ROS\_DOMAIN\_ID — ROS 2 Documentation](https://docs.ros.org/en/humble/Concepts/About-Domain-ID.html)
 
 ### ROS Services
 
-[Understanding services — ROS 2 Documentation: Galactic documentation](https://docs.ros.org/en/galactic/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Services/Understanding-ROS2-Services.html)  
+[Understanding services — ROS 2 Documentation: Humble documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Services/Understanding-ROS2-Services.html)  
 
 
 ## Other ROS2 Components
@@ -64,7 +67,7 @@ Read more about domains here:
 
 TF2 is a ROS library for managing coordinate frames and translating between them.
 
-- [About tf2 — ROS 2 Documentation](https://docs.ros.org/en/galactic/Concepts/About-Tf2.html)
+- [About tf2 — ROS 2 Documentation](https://docs.ros.org/en/humble/Concepts/About-Tf2.html)
 - [An article on tf2 in the context of Formula Trinity](/tf2)
 
 ### RVIZ
