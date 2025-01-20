@@ -19,15 +19,16 @@ Here are some important links:
 You'll need to download/clone the velodyne ROS2 drivers from [the "ros-drivers/velodyne" github repo](https://github.com/ros-drivers/velodyne/). You compile it like you would compile any other ROS2 package. After cloning the repo, make sure you are on the correct branch of the repo. Depending on what installation of ROS2 you have, you may need to switch to the correct branch. For example, if you are using ROS2 galactic, you would need to switch (git switch or checkout) to the `galactic` branch (ROS2 branch should be fine for humble). As everyone is probably using humble, you dont have to switch branches. Then you can compile the package with the following commands: 
 
 ```
-git clone git clone https://github.com/ros-drivers/velodyne/
-// Switch to the branch if needed to
-// Then you have to source the environment
+# Switch ros2 to the branch you want to clone if necessary
+git clone git clone https://github.com/ros-drivers/velodyne/ -b ros2
+
+# Then you have to source the environment
 . /opt/ros/humble/setup.bash
 
-// Then you can build the package
+# Then you can build the package
 colcon build --symlink-install
 
-// Source the workspace
+# Source the workspace
 . install/setup.bash
 ```
 
