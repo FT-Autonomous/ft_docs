@@ -4,6 +4,32 @@ title: General SSH Resources
 
 ## General SSH Resources
 
+### Tmux
+
+Sometimes you want to have multilpe terminal windows on the remote host that you're SSHing into. You could start multiple terminals and run the `ssh TARGET` command in each one, but there are better ways of doing this. I reccomend using the `tmux` (terminal multiplexer) program.
+
+{% image src="https://github.com/tmux/tmux/wiki/images/tmux_with_panes.png" width="400px" /%}
+
+At a surface level, just from the image above, you can see that tmux allows you to define multiple terminal panes in a single SSH session. This is good but this is not even the main advantage of tmux. The main advantage of tmux is the concept of an SSH session whose state is stored on the remote host. Essentially, I can run the following command to start a tmux sessin called `my-session`:
+
+```
+ssh TARGET -t tmux new -t my-session
+```
+
+Then, in the case where the SSH connection is terminated, either intentionally as I decided to close my laptop or the connection was dropped, I can simply SSH in again and run:
+
+```
+ssh TARGET -t tmux attach -t my-session
+```
+
+This command will resume the SSH connection with all my panes already opened and everything I was working on will be restored! `tmux` has even more powerful features like allowing you to define scripts that spin up panes automatically ([see how we use this here](https://github.com/FT-Autonomous/ft_misperception/blob/ed28699216ea9891955376fd6dd1f73e374db0ff/src/ft_calibration/puppetmaster.py#L33-L39)).
+
+Here are some usful links for learning about how `tmux` works:
+
+- [`tmux` getting started guide on GitHub](https://github.com/tmux/tmux/wiki/Getting-Started)
+- [`tmux` manual page](https://duckduckgo.com/?t=ffab&q=tmux+manpage&ia=web)
+- [How to scroll in `tmux`](https://superuser.com/a/209608)
+
 ### Copying Files
 
 You can use rsync to copy files to or from an SSH target.
@@ -26,7 +52,7 @@ Runing graphical applications on your laptop will then open windows on your comp
 If you have an SSH key set up on your comptuer, you can configure SSH targets to accept that key instead of a password for authentication. To do this, first get the public key of your SSH key. This is done using the `ssh-add -L` command. The output should be somthing like the following:
 
 ```
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDlLErR2WXcmG0mKqwDXwzLe1Gq7jfGU3O5+csrXtKCCoJzghIcHO6zWdPoInPiNRGB6wX8qdL4jyfF/D1h9hWv9n6iNnshkFgLAy5EpVPq9ug7A2XUY5Esm8ajo0ryG6zNS/1A9MozvxmjBx1BUgGyVs5pstlSK7FckoIxhIbsc0Pf5juejGUasP02iZ7HlhYvl9jdXQCIcY+f6lu/WsycDHDAxL27URUldt4r5hY5eQVUT/cPpuksXHBxjVKOYul4KLTWA4dLWb46Kh9/Tn0hS8qInYTZQJzR5MQWnyIvQIr180HmfIat7s/24L4F/hy4YchaWebUM3npzLMRDYXvJyYKZKQ1qQZjhfMOwNUHIqsB724R3otiU6eW8GcThHhXVkBKhi5OPcBdU0DNUPJMFIKky9S+lTeTxQiwn6JW+wV7wKo+AqEsiEcLp4MZg7U/pM62/TZUXUvhDcLbo5pNqHCF6pVIae8wXJjq6AzT4VOSLkM+w3qJUnDAQjAHBFdZ18hNP2qm1TYlzX0gI8uVs0TpcQB6bNo6R9MjbtbSl/K4tKpmD/6BFKBU+v8WmsG7pszJq6p8iAYSkwIf/PjXTgS9sc4uCIlo/2kk1qvKhf/UMu/x/9aTYrzOWkyj6zAHasfUXYTBJn778v8Tln4lpWTmtOUbgrZlHThNkareqw== (none)
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDlLE … (none)
 ```
 
 You then want to navigate to the remote host (for example, macneill or the FTA PC) and add this as an entry in the `~/.ssh/authorized_keys` file.

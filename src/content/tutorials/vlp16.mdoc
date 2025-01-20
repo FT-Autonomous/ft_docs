@@ -1,0 +1,47 @@
+---
+title: The Velodyne VLP16
+---
+
+## The Velodyne VLP16
+
+{% image src="https://ouster.imgix.net/OUSTER_product1-Post.jpg?ixlib=js-3.8.0&q=75&auto=format%2Ccompress&w=1200&max-w=2048" width="500px" /%}
+
+The VLP 16 is our main LiDAR sensor. It's a 16 line LiDAR, hence its name.
+
+Here are some useful links:
+
+- [VLP16 main page](https://ouster.com/products/hardware/vlp-16) - Propaganda information.
+- [VLP16 datasheets and manuals](https://ouster.com/downloads/velodyne-downloads)
+- [VLP16 ROS2 Driver GitHub repository](https://github.com/ros-drivers/velodyne/)
+
+### Using the Velodyne
+
+You'll need to download the velodyne ROS2 drivers from [the "ros-drivers/velodyne" github repo](https://github.com/ros-drivers/velodyne/). You compile it like you would compile any other ROS2 package. You then want to power it on, plug everything in and set up the network (see below). You then run following command to start the velodyne:
+
+```
+ros2 launch velodyne velodyne-all-nodes-VLP16-composed-launch.py
+```
+
+#### Setting up the Network
+
+Note that this section was derived from the manual. If anything here doesn't work, refer to the manual for further clarification.
+
+Give the velodyne static ip `192.168.1.200` via `nm-connection-editor`. There may already be a "Velodyne" ethernet connection in NetworkManager, if so, skip to the activation step. The mask should be `255.255.255.0` and gateway to `255.255.255.255`.
+
+Once the network has been set up, the Velodyne can be configured in a web console made available on the IP address `192.168.1.201` (yes, this is different from the IP address assigned to the network interface).
+
+#### Activating the Velodyne Network
+
+To activate the Velodyne network configuration, run the command.
+
+```
+nmcli connection up Velodyne
+```
+
+#### Troubleshooting
+
+First, verify that the velodyne is actually turned on. You should hear a dim continuous hum from the velodyne coming from the internal motor that spins the laser. Additionally, when you place your hand on the velodyne you should feel a continous vibration.
+
+To see if the LiDAR is working, I generally run the command `ip -br a`. The ethernet interface corresponding to the velodyne should be `UP` and it should be color coded green.
+
+If the network interface iMost of the time, issues with our velodyne are hardware faults due to the wires coming out inside of the interface box. You're best off 

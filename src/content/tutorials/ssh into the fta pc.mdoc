@@ -14,7 +14,7 @@ Some of the inconveniences associated with RDP include:
 
 ### SSH Tunnelling Method
 
-Generally, to make the FTA PC accessible over the internet, we would just open port 22 (the TCP port used for SSH) in the firewall, spin up the `ssh` daemon in the FTA PC get right to it. The issue is that we do not control the firewall that TCD uses to secure the college network and TCD is averse to opening ports to the world outside of the college network if it does not nead to, understandably so. Long story short, the FTA PC cannot be reached directly from our own PC on port 22 over the internet!
+Generally, to make the FTA PC accessible over the internet, we would open port 22 (the TCP port used for SSH) in the firewall, spin up the `ssh` daemon in the FTA PC get right to it. The issue is that we do not control the firewall that TCD uses to secure the college network and TCD is averse to opening ports to the world outside of the college network if it does not nead to, understandably so. Long story short, the FTA PC cannot be reached directly from our own PC on port 22 over the internet!
 
 There is a work around for this however, whch is more secure than opening ports to the internet. We can leverage a mechanism called **ssh tunnelling**. The underlying principle is that if we have a server accessible on the internet to both the FTA PC and our own PC, we can leverage a mechanism in the `ssh` protocol that allows us to proxy through SSH servers to get to our destination.
 
