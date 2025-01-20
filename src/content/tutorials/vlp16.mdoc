@@ -74,3 +74,17 @@ Once the network is set up, you can run the velodyne driver with the following c
 ros2 launch velodyne velodyne-all-nodes-VLP16-composed-launch.py
 ```
 
+#### Visualising the LiDAR Output
+
+Source your ROS workspace and then run the following:
+
+```
+rviz2
+```
+
+You will need to add the topic corresponding to the point cloud. To do this, click the `Add` button in the bottom left hand side of the screen. In the main menu you should see the `PointCloud2` topic. You want to add that to the view. Then expand the new `PointCloud2` menu in the menu in the left hand side. You need to configure the topic to point to the name of the topic published by the driver. In this case the topic name is `/velodyne_points`. Finally, set the `Fixed Frame` option in the global options menu to `velodyne`. Once this is done you should be able to see everything in RVIZ (see more on how to use RVIZ2 here).
+
+See also:
+
+- [Our TF2 article](/tf2) - To understand more in depth what is meant by a "frame".
+- [Our RVIZ article](/rviz) - To learn more about RVIZ2.
