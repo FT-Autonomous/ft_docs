@@ -13,9 +13,9 @@ npm create astro
 ```
 
 This will launch an interactive TUI application for boostrapping an Astro project, much like `create-react-app` if you have ever used React.
-{% right %}
-    {% figure src="/npm create astro.png" alt="TUI Interface" width="350" caption="Graphic showing the interactive TUI presented by 'npm create astro'" /%}
-{% /right %}
+
+{% figure src="/npm create astro.png" alt="TUI Interface" width="350" caption="Graphic showing the interactive TUI presented by 'npm create astro'" /%}
+
 
 You'll want to create your Astro project in the current directory (`./`), use the `empty` template, use `typescript` and specify that you like your typescript `strict` and finally install dependencies. There is no need to run `npm init` or create a `src/` folder as the template above will have already done this for you.
 
@@ -124,7 +124,7 @@ npx astro dev
 
 ### Setting up Image Support
 
-You need to do this manually 💀 by following this guide: <https://docs.astro.build/en/guides/integrations-guide/markdoc/#create-a-custom-markdoc-image-tag>. I will summarise it here.
+You need to do this manually 💀 by following this guide: <https://docs.astro.build/en/guides/integrations-guide/markdoc/#create-a-custom-markdoc-image-tag>. This is summarised below.
 
 In your `markdoc.config.mjs` file, you want to define a new tag as follows:
 
@@ -264,11 +264,17 @@ import Layout from "../layouts/Layout.astro"
 
 You can read more about AstroJS layouts here: <https://docs.astro.build/en/basics/layouts/>.
 
+## Custom Headings
+
+AstroJS automatically generates ids for headings. This article is guide on how to integrate them:
+
+- https://docs.astro.build/en/guides/integrations-guide/markdoc/#custom-headings
+
 ## Adding Access Control with {% image src="https://clerk.com/v2/downloads/clerk-logo-white.png" height="1em" /%}
 
 This is where the SaaS goblins catch you out. On GitHub pages, access control is an Enterprise only feature, so if you want to have any sensitive data on there, you're SoL! You really ought to find some kind of server and a means of making that server visible on the public internet (with a combintation of [pinggy](https://pinggy.io/) and [cloudflare](https://cloudflare.com/) you can orchestrate a dynamic DNS set up to make any device with outbound access to the internet visible on the through a DNS name proxied through cloudflare).
 
-Once you have a server, you can pick any auth provider really. I picked [Clerk](https://clerk.com/) as I had some bad experiences with [Auth0](https://auth0.com/) at Evervault.
+Once you have a server, you can pick any auth provider really. [Clerk](https://clerk.com/) is one possible option.
 
 You're going to want to install the clerk astro plugin:
 
@@ -314,7 +320,7 @@ export const onRequest = clerkMiddleware();
 
 ### Migrating to Dynamic Routing
 
-For Clerk to work, we need to use some server side rendering. There's a guide for doing this here: <https://docs.astro.build/en/guides/routing/>. I will summarise it below. Add the following entry to `astro.config.mjs`.
+For Clerk to work, we need to use some server side rendering. There's a guide for doing this here: <https://docs.astro.build/en/guides/routing/>. This is sumarised below. Add the following entry to `astro.config.mjs`.
 
 ```js
 defineConfig({ 
@@ -364,7 +370,7 @@ const entry = collection.find(entry => entry.slug == slug);
 
 ### Access Control
 
-I reccomend  putting the access control logic in the layout layer. To add componetns for access control, edit `src/layouts/Layout.astro` and enter the following in the header.
+It's reccomended to put the access control logic in the layout layer. To add componetns for access control, edit `src/layouts/Layout.astro` and enter the following in the header.
 
 ```astro
 ---

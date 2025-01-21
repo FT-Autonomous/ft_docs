@@ -10,7 +10,7 @@ Some of this size is inevitable, but some of it could realistically be avoided. 
 
 An ad hoc solution to dealing with such massive bags is to cut them down to a more manageable size that focuses only on the part of the data that we are interested in. In this particular case, we are talking about a 22GB bag file where the starting few seconds records us moving the vehicle onto the track and the latter few seconds consist of our pit stop team moving the car off the track again. All that can be cut out if we just want to test our algorithms.
 
-A naive way to cut down ROS2 bags might be to play the bags on the network using the `ros2 bag play <bag>` command, and then subsequently record the relevant section of the bag using the `ros2 bag record <bag>` command. I've done this a couple times before. However, there's a much better way of doing this.
+A naive way to cut down ROS2 bags might be to play the bags on the network using the `ros2 bag play <bag>` command, and then subsequently record the relevant section of the bag using the `ros2 bag record <bag>` command. However, there's a much better way of doing this.
 
 There is an open source tool that we can avail of to cut our bags down to size present in the `ros2bag_tools` utility ([github](https://github.com/AIT-Assistive-Autonomous-Systems/ros2bag_tools)). It can be thought of as an extension to the existing `ros2 bag …` family of commands. The way it's "installed" is by cloning the repository into a workspace and then compiling and sourcing that workspace. Here are the relevant commands one might do:
 
@@ -26,7 +26,7 @@ Our subject bag in this case is called `second_trackd` (don't ask why) stored in
 ros2 bag play ~cleavon/Desktop/Bags/second_trackd
 ```
 
-To cut the bag I used the following command:
+To cut the bag use the following command:
 
 ```
 ros2 bag cut ~cleavon/Desktop/Bags/second_trackd --start 60 --duration 180 --output second_trackd_cut

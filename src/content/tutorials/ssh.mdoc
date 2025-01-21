@@ -6,23 +6,23 @@ title: General SSH Resources
 
 ### Tmux
 
-Sometimes you want to have multilpe terminal windows on the remote host that you're SSHing into. You could start multiple terminals and run the `ssh TARGET` command in each one, but there are better ways of doing this. I reccomend using the `tmux` (terminal multiplexer) program.
+Sometimes you want to have multilpe terminal windows on the remote host that you're SSHing into. You could start multiple terminals and run the `ssh TARGET` command in each one, but there are better ways of doing this. It's reccomended to use the `tmux` (terminal multiplexer) program.
 
 {% image src="https://github.com/tmux/tmux/wiki/images/tmux_with_panes.png" width="400px" /%}
 
-At a surface level, just from the image above, you can see that tmux allows you to define multiple terminal panes in a single SSH session. This is good but this is not even the main advantage of tmux. The main advantage of tmux is the concept of an SSH session whose state is stored on the remote host. Essentially, I can run the following command to start a tmux sessin called `my-session`:
+At a surface level, just from the image above, you can see that tmux allows you to define multiple terminal panes in a single SSH session. This is good but this is not even the main advantage of tmux. The main advantage of tmux is the concept of an SSH session whose state is stored on the remote host. Essentially, you can run the following command to start a tmux sessin called `my-session`:
 
 ```
 ssh TARGET -t tmux new -t my-session
 ```
 
-Then, in the case where the SSH connection is terminated, either intentionally as I decided to close my laptop or the connection was dropped, I can simply SSH in again and run:
+Then, in the case where the SSH connection is terminated, either intentionally as you decided to close your laptop or the connection was dropped, you can simply SSH in again and run:
 
 ```
 ssh TARGET -t tmux attach -t my-session
 ```
 
-This command will resume the SSH connection with all my panes already opened and everything I was working on will be restored! `tmux` has even more powerful features like allowing you to define scripts that spin up panes automatically ([see how we use this here](https://github.com/FT-Autonomous/ft_misperception/blob/ed28699216ea9891955376fd6dd1f73e374db0ff/src/ft_calibration/puppetmaster.py#L33-L39)).
+This command will resume the SSH connection with all your panes already opened and everything you were working on will be restored! `tmux` has even more powerful features like allowing you to define scripts that spin up panes automatically ([see how we use this here](https://github.com/FT-Autonomous/ft_misperception/blob/ed28699216ea9891955376fd6dd1f73e374db0ff/src/ft_calibration/puppetmaster.py#L33-L39)).
 
 Here are some usful links for learning about how `tmux` works:
 

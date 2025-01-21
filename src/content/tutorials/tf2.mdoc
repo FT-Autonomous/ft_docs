@@ -10,7 +10,7 @@ Coordinate frames can generally be related to each other. In ROS2, we consider c
 
 ## Debugging TF2 Issues
 
-Some are lucky in life and never have to debug TF2 issues. Others do not have that good fortune (I'm a victim).
+Some are lucky in life and never have to debug TF2 issues. Others do not have that good fortune.
 
 ### Exporting The Tree to a PDF
 
@@ -20,7 +20,7 @@ ros2 run tf2_ros view_frames
 
 You can use this output to diagnose cases where your transforms tree is disconnected in cases where it shouldn't be.
 
-One particular example where this arises is when using open source libraries for sensors which export sensor internal transformation tree information. In this case, I'm referring to the ZED2 SDK, which defines the coordinate frames for the left camera, the right camera and even for things such as the magnetometer and the barometer, and also defines the relationship between those coordinate frames and the base of the ZED2 camera. The base of the ZED2 camera is then linked to the base of some parent body, which the ZED2 SDK by default assumes is named `base_link`. This may not be what you have actually named the parent body of your ZED2 camera, for example, in our code base, across different eras, we have used the frames `base_footprint` (taken from the name given to the vehicle base in EUFS) to `chassis` (a more natural sounding one, also taken from EUFS).
+One particular example where this arises is when using open source libraries for sensors which export sensor internal transformation tree information. The ZED2 SDK is an example of this, which defines the coordinate frames for the left camera, the right camera and even for things such as the magnetometer and the barometer, and also defines the relationship between those coordinate frames and the base of the ZED2 camera. The base of the ZED2 camera is then linked to the base of some parent body, which the ZED2 SDK by default assumes is named `base_link`. This may not be what you have actually named the parent body of your ZED2 camera, for example, in our code base, across different eras, we have used the frames `base_footprint` (taken from the name given to the vehicle base in EUFS) to `chassis` (a more natural sounding one, also taken from EUFS).
 
 ### Getting a "Live" View of the Transforms Tree
 
@@ -42,11 +42,11 @@ ros2 run rqt_tf_tree rqt_tf_tree
 
 Consider a scenario where we have a coordinate frame named `odom` which is anchored at some point on the race track. For simplicity, we can consider this to be the start of the circuit. No imagine a scenario where at time step `t`, we have said that our vehicle (represented by the `chassis` frame) is 5 meters away from the origin at an angle of 45 degrees. Now, let's say at time step `t + 0.0001`, we want to know the transform from the `odom` frame to the `chassis` frame. Does it make sense to simply use the previous transform, since it's within some threshold?
 
-I would argue that the answer is yes. TF2 would beg to differ. In TF2, we explicitly **cannot** use transforms on data unless the transform and the data have exactly the same timestamp.
+TF2 would beg to differ. In TF2, we explicitly **cannot** use transforms on data unless the transform and the data have exactly the same timestamp.
 
-I can speculate why. You would certainly not want to make a predefined threshold based on something like a human intuition of when two events are close to each other, seeing as ROS2 topics and transforms allow time stamping at a precision down to the nanosecond. For robotics operating on small timescales (possibly using real time operating systems), interpolation on a human scale would be incoherent and cause chaos. One might then ask why ROS2 doesn't let us just specify the threshold ourselves. I'm not actually sure about this &#x2013; perhaps it would become too complex having to specify interpolation thresholds for each different kind of data. The implication of all this is once again that we have to make sure that all data points (such as point cloud data or camera data) that we want to transform have an associated transform tree whose time stamp is equal to the time stamp in that data point. The community probably deemed this to be acceptable at some point.
+This is possibly related to how you would certainly not want to make a predefined threshold based on something like a human intuition of when two events are close to each other, seeing as ROS2 topics and transforms allow time stamping at a precision down to the nanosecond. For robotics operating on small timescales (possibly using real time operating systems), interpolation on a human scale would be incoherent and cause chaos. One might then ask why ROS2 doesn't let us just specify the threshold ourselves. Not actually sure about this &#x2013; perhaps it would become too complex having to specify interpolation thresholds for each different kind of data. The implication of all this is once again that we have to make sure that all data points (such as point cloud data or camera data) that we want to transform have an associated transform tree whose time stamp is equal to the time stamp in that data point. The community probably deemed this to be acceptable at some point.
 
-Not fully understanding the issue of time has caused me a world of pain trying to get RVIZ to render topics. Once you understand how TF2 handles time, and your TF2 tree looks about right, you should not face any issues with TF2 at all.
+Not fully understanding the issue of time has caused us a world of pain trying to get RVIZ to render topics. Once you understand how TF2 handles time, and your TF2 tree looks about right, you should not face any issues with TF2 at all.
 
 ## Transform Publishers
 

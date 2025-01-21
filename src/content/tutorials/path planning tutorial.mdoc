@@ -4,73 +4,15 @@ title: ROS Path Planning Tutorial
 
 ## ROS Path Planning Tutorial
 
-### Cloning our Repository
+To follow this tutorial, first ensure that you are fully set up with our code, EUFS simulator and gazebo. There is a guide on how to do that [here](/stack)
 
-First of all, set up your github account on the FTA PC.  This can be done using the command.
+### Analysing Topics
 
-```bash
-gh auth login
+Once set up, you'll want to start the simulator as follows:
+
 ```
-
-Then clone the simulator:
-
-```bash
-mkdir -p ~/ft
-cd ~/ft
-git clone https://github.com/FT-Autonomous/ft-ubuntu-bootstrap
-sh ft-ubuntu-bootstrap/get-eufs
-gh repo clone FT-Autonomous/FT-FSAI-23 -- --recurse-submodules
-```
-
-If you are not using the GIT CLI, you should follow [this guide from GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) to add an SSH key to your account. Once that key has been added, you can run the following command.
-
-```bash
-git clone --recuse-submodules git@github.com:FT-Autonomous/FT-FSAI-23
-```
-
-If you get an error complaining that the repository doesn’t exist, you may not be a member of the GitHub organisation, so ask somebody to add you.
-
-### Getting Set Up for ROS Development
-
-After that you need to make sure that you have ROS2 sourced in your terminal environment. If it is not already present, add the following line to your `~/.bashrc` file.
-
-```bash
-. /opt/ros/galactic/setup.bash
-```
-
-If this line was not already present, after making the change, you will need to start a new terminal. In the new terminal, you can check whether or not ROS2 has been sourced using  the following command:
-
-```bash
-ros2
-```
-
-If everything worked out fine, this should print out all of the subcommands available under the main ros2 command. The next step is to compile all of our code along with the simulator code. You can do this with the following command.
-
-```bash
-cd ~/ft
-colcon build --symlink-install
-```
-
-**Note**: There’s currently a bug in the repository which causes ft\_fsd to fail to compile the first time around. If you see an ft\_fsd error, run things again. This will be fixed soon.
-
-Colcon is one of the main build tools for ROS2. The colcon build command is the only one that you will ever use. After compiling your code in the `~/ft` folder, you need to import all of  the compiled packages into your terminal using the following command:
-
-```bash
 cd ~/ft
 . install/setup.sh
-```
-
-The dot in bash is similar to the import statement in python. Once you have used that command, you should try to run the simulator. You will need to source the contents of the \`\~/ft\` workspace every time you want to run the simulator.
-
-Pro Tip: You can shorten this by adding the following command to your `~/.bashrc`. It defines a `.w` command that navigates to your workspace and imports all dependencies in one command.
-
-```bash
-alias .w='cd ~/ft ; . install/setup.bash'
-```
-
-Pro Tip: If you get an EUFS\_MASTER error, just close the terminal, open it again and ‘cd’ back into ft. That should solve the error.
-
-```bash
 ros2 launch eufs_launcher eufs_launcher.launch.py
 ```
 

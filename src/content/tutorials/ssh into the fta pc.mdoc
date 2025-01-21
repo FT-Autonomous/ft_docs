@@ -26,7 +26,7 @@ The only prerequisite to this method is that you have access to a globally acces
 
 The first step is to establish the right hand side of the connection. This is actually done by the FTA PC calling out to the globally accessible SSH server (macneill). This sounds a bit backwards, but remember that the FTA PC can't be accessed inbound over SSH.
 
-Technically, only one person needs to establish the right hand side of the tunnel. It would be easier to just rely on one single connection on the right side but this relies on coordination between different people so I just reccomend making your own. The only issue that arises with people creting their own connections is that each person has to select their own TCP port to use on macneill to represent the outbound connection. To slect such ap port, pick a random number from 1024-65535.
+Technically, only one person needs to establish the right hand side of the tunnel. It would be easier to just rely on one single connection on the right side but this relies on coordination between different people so it's just reccomended to make your own. The only issue that arises with people creting their own connections is that each person has to select their own TCP port to use on macneill to represent the outbound connection. To slect such ap port, pick a random number from 1024-65535.
 
 Thus there will be three "variables" in play which you will have to replace while following this guide:
 
