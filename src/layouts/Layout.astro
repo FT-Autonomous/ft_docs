@@ -60,9 +60,7 @@ import * as Theme from "../theme.ts";
       header a:hover {
         color: var(--linkHoverColor); /* Use the new hover color */
       }
-      .two-panel-layout {
-        display: flex;
-      }
+      
       .left {
         min-width: 200px;
         max-width: 200px;
@@ -83,16 +81,18 @@ import * as Theme from "../theme.ts";
       :global(img) {
         max-width: 100%;
       }
-
+      
       @media (max-width: 480px) {
-        .mobile-layout { display: default; }
-        .two-panel-layout { display: none; }
+        .mobile-layout-nav { display: default; }
+        .desktop-layout-nav { display: none; }
         :global(h2) { max-width: 85%; }
+        .content { padding: 0; }
       }
 
       @media (min-width: 481px) {
-        .mobile-layout { display: none; }
-        .two-panel-layout { display: default; }
+        .mobile-layout-nav { display: none; }
+        .desktop-layout-nav { display: default; }
+        .content-container { display: flex; }
       }
     </style>
   </head>
@@ -102,16 +102,10 @@ import * as Theme from "../theme.ts";
       <UserButton afterSignOutUrl={`https://${process.env.FT_DOCS_HOST}/ft_docs`} />
     </header>
     <AuthBarrier>
-      
-      <!-- if the screen is not enough we use the mobile layout -->
-      <div class="mobile-layout">
-        {(includeNavBar ?? true) ? <MobileNavBar/> : ""}
-        <slot/>
-      </div>
-      
       <!-- if the screen is big enough we use a two panel layout -->
-      <div class="two-panel-layout">
-        {(includeNavBar ?? true) ? <div class="left"><LeftNavBar/></div> : ""}
+      <div class="content-container">
+        {(includeNavBar ?? true) ? <MobileNavBar class="mobile-layout-nav"/> : ""}
+        {(includeNavBar ?? true) ? <div class="left desktop-layout-nav"><LeftNavBar/></div> : ""}
         <div class="content">
           <slot/>
         </div>

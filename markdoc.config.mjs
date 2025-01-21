@@ -24,4 +24,11 @@ export default defineMarkdocConfig({
       render: component('./src/components/Image.astro'),
     },
   },
+  /* https://docs.astro.build/en/guides/integrations-guide/markdoc/#custom-headings */
+  nodes: {
+    heading: {
+      ...nodes.heading, // Preserve default anchor link generation
+      render: component('./src/components/Heading.astro'),
+    },
+  },
 });

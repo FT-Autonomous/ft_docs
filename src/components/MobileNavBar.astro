@@ -2,6 +2,7 @@
 /* This component defines a nav bar primarilly meant for mobile that will position itself below the header tag */
 import LeftNavBar from "../components/LeftNavBar.astro";
 import * as Theme from "../theme.ts";
+const { class: className, ...rest } = Astro.props;
 ---
 <style define:vars={ Theme }>
   .hovering-nav-bar {
@@ -11,6 +12,7 @@ import * as Theme from "../theme.ts";
     border-radius: 10px;
     margin-left: 10px;
     max-height: 600px;
+    width: 70%;
     overflow: scroll;
     padding: 1em;
   }
@@ -44,7 +46,7 @@ import * as Theme from "../theme.ts";
   }
 </style>
 
-<div class="stay-at-top-of-screen">
+<div class:list={["stay-at-top-of-screen", className]} {...rest} >
   <div class="float-over-children">
     <span class="menu-button">≡</span>
     <div class="mobile-layout hovering-nav-bar hidden">

@@ -1,0 +1,16 @@
+---
+import * as Theme from "../theme.ts";
+const { level, id } = Astro.props;
+const href = `#${id}`;
+---
+<style define:vars={ Theme }>
+a { color: var(--foregroundColor); text-decoration: none; }
+</style>
+{[<h1 {id}><a {href}><slot/></a></h1>,
+  <h2 {id}><a {href}><slot/></a></h2>,
+  <h3 {id}><a {href}><slot/></a></h3>,
+  <h4 {id}><a {href}><slot/></a></h4>,
+  <h5 {id}><a {href}><slot/></a></h5>,
+  <h6 {id}><a {href}><slot/></a></h6>][level-1]!}
+
+
