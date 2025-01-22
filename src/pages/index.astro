@@ -1,6 +1,11 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-const codeEntries = await getCollection('tutorials');
+
+const tutorialEntries = await getCollection('tutorials');
+const equipmentEntries = await getCollection('equipment');
+const resourceEntries = await getCollection('resources');
+const guidelineEntries = await getCollection('guidelines');
+
 import * as Context from "../content/departments/config.ts";
 const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
 import Layout from "../layouts/Layout.astro";
@@ -61,8 +66,14 @@ import Layout from "../layouts/Layout.astro";
       <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}>{e.data.title}</a></li>))}</ul>
     </div>
     <div>
-      <h2>Guides and Tutorials</h2>
-      <ul>{codeEntries.map(e => (<li><a href={`/${e.slug}`}>{e.data.title}</a></li>))}</ul>
+      <h2>Tutorials</h2>
+      <ul>{tutorialEntries.map(tutorial => (<li> <a href={`/${tutorial.slug}`}>{tutorial.data.title}</a> </li>))} </ul>
+      <h2>Equipment</h2>
+      <ul>{equipmentEntries.map(equipment => (<li> <a href={`/${equipment.slug}`}>{equipment.data.title}</a> </li>))} </ul>
+      <h2>Resources</h2>
+      <ul>{resourceEntries.map(resource => (<li> <a href={`/${resource.slug}`}>{resource.data.title}</a> </li>))} </ul>
+      <h2>Guidelines</h2>
+      <ul>{guidelineEntries.map(guideline => (<li> <a href={`/${guideline.slug}`}>{guideline.data.title}</a> </li>))} </ul>
     </div>
     <h2>System Diagram</h2>
     <div class="system-diagram">

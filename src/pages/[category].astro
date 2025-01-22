@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from 'astro:content';
+import config from "../../astro.config.mjs";
+
+export const prerender = true;
+
+export const getStaticPaths = async () => {
+  return [
+    { category: 'tutorials', title: 'Tutorials' },
+    { category: 'equipment', title: 'Equipment' },
+    { category: 'guidelines', title: 'Guidelines' },
+    { category: 'resources', title: 'Resources' },
+  ].map(
+    (category) => ({
+      props: category,
+      params: { category: category.category },
+    })
+  );
+};
+
+const { category, title } = Astro.props;
+const collection = await getCollection(category);
+
+---
+<Layout title=}{title} includeNavBar={true}>
+  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+    <h1>{title}</h1>
+    {collection.map(k => <li><a href={`${k.slug}`}>{k.data.title}</a></li>)}
+    <br>
+    <footer><a href="/">Back Home</a></footer>
+  </div>
+</Layout>
