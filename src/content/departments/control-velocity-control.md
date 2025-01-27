@@ -1,4 +1,3 @@
-#control 
 The second objective of control is to send acceleration commands to the car. Sounds simple, right? Well firstly we need to ask ourselves 'what speed does the car need to reach?', 'how do we change the speed?', and 'how do we maintain our speed?'. 
 
 If you send acceleration values to the car, it will eventually reach its target speed (which we call a 'setpoint'). However, without any feedback and adjustment, the car will keep accelerating without slowing down. 
