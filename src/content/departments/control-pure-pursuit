@@ -5,7 +5,7 @@ The idea of pure pursuit is to calculate a goal point on the path, where the pat
 
 As the robot moves forward, the goal point will change (because the intersection between $l_d$ and the path will change). The car will never reach the goal point, but it will continue travelling along the path. 
 
-(Missing Image!)
+![[Pasted image 20241029145427.png]]
 Credit to purduesigbots.com for the image. 
 
 ## The Maths
