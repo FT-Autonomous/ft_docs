@@ -1,4 +1,3 @@
-#formula 
 Assuming you read the Velocity Control and PID guide, then you know that the parameters (kp, ki and kd) need to be evaluated before been put into the code. There are many ways to tune a PID, and in this guide, we'll go over the methods we used and had success with. 
 
 ## Manual 
