@@ -1,14 +1,25 @@
 ---
+interface Props {
+  /** This is a string which is equal to the slug of the document being presented */
+  currentSlug?: string;
+}
+
 import { getCollection, getEntry } from 'astro:content';
 
 const tutorialEntries = await getCollection('tutorials');
 const equipmentEntries = await getCollection('equipment');
 const resourceEntries = await getCollection('resources');
 const guidelineEntries = await getCollection('guidelines');
+const allDepartmentEntries = await getCollection('departments');
 
 import * as DepartmentsContext from "../content/departments/config.ts";
-const departmentEntries = (await Promise.all(DepartmentsContext.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
+
+const departmentNames = DepartmentsContext.slugOrder;
+const departmentEntries = allDepartmentEntries.filter(entry => departmentNames.includes( entry.slug));
+const departmentSubEntries = (department: string) => allDepartmentEntries.filter(entry => entry.slug.startsWith(`${department}-`) && !(entry.slug === `${department}-theory`));
 import * as Theme from "../theme.ts";
+
+const { currentSlug } = Astro.props;
 ---
 <style define:vars={ Theme }>
 
@@ -32,12 +43,15 @@ ul li a:hover {
 
 .dropdown-content {
   display: none;
+  margin-left: 5px;
   padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-left: 1px solid white;
 }
 
 .dropdown-content a {
   color: var(--foregroundColor);
-  padding: 5px 0;
   display: block;
   text-decoration: none; /* Remove underlines */
 }
@@ -84,10 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
 <ul>
   {departmentEntries.map(department => (
     <li class="dropdown">
-      <span class="dropdown-button">{department.data.title}</span>
+      <span class:list={["dropdown-button", ...[(currentSlug !== undefined && currentSlug.startsWith(department.slug)) ? ["show"] : []]]}>{department.data.title}</span>
       <div class="dropdown-content">
-        <a href={`/${department.slug}`}>Overview</a>
-        <a href={`/${department.slug}-theory`}>Theory</a>
+        <ul>
+          <li><a href={`/${department.slug}`}>Overview</a></li>
+          <li><a href={`/${department.slug}-theory`}>Theory</a></li>
+          {departmentSubEntries(department.slug).map(sub => <li><a href={`/${sub.slug}`}>{sub.data.title}</a></li>)}
+        </ul>
       </div>
     </li>
   ))}

@@ -1,8 +1,16 @@
 ---
+interface Props {
+  /** The current content slug being displayed… */
+  currentSlug?: string;
+  /** Yup */
+  class: string;
+}
+
 /* This component defines a nav bar primarilly meant for mobile that will position itself below the header tag */
 import LeftNavBar from "../components/LeftNavBar.astro";
 import * as Theme from "../theme.ts";
-const { class: className, ...rest } = Astro.props;
+const { currentSlug, class: className, ...rest } = Astro.props;
+
 ---
 <style define:vars={ Theme }>
   .hovering-nav-bar {
@@ -50,7 +58,7 @@ const { class: className, ...rest } = Astro.props;
   <div class="float-over-children">
     <span class="menu-button">≡</span>
     <div class="mobile-layout hovering-nav-bar hidden">
-      <LeftNavBar />
+      <LeftNavBar {currentSlug} />
     </div>
   </div>
 </div>

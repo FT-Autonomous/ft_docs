@@ -24,7 +24,7 @@ const { category, title } = Astro.props;
 const collection = await getCollection(category);
 
 ---
-<Layout title=}{title} includeNavBar={true}>
+<Layout title={title} includeNavBar={true}>
   <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
     <h1>{title}</h1>
     {collection.map(k => <li><a href={`${k.slug}`}>{k.data.title}</a></li>)}

@@ -31,7 +31,7 @@ let entry = config.output === "static"
 const { data: { description, title } } = entry ?? { data: { description: 'Not Found', title: 'Not Found' } };
 const { Content } = entry !== undefined ? await entry.render() : { Content : '' };
 ---
-<Layout title={title} includeNavBar={true}>
+<Layout title={title} includeNavBar={true} currentSlug={Astro.params.slug}>
   <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
     <Content />
     <footer><a href="/">Back Home</a></footer>

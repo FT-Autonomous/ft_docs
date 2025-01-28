@@ -1,11 +1,20 @@
 ---
+interface Props {
+  /** The title of the page. Will be used for the tab title */
+  title: string,
+  /** Whether or not to include the nav bar */
+  includeNavBar: boolean,
+  /** The current content slug being displayed… */
+  currentSlug?: string
+};
+
 import { UserButton } from "@clerk/astro/components";
 import LeftNavBar from "../components/LeftNavBar.astro";
 import MobileNavBar from "../components/MobileNavBar.astro";
 import Authenticated from "./Authenticated.astro";
 import Identity from "./Identity.astro";
 
-const { title, includeNavBar } = Astro.props;
+const { title, includeNavBar, currentSlug } = Astro.props;
 
 const AuthBarrier = process.env.FT_DOCS_FORCE_AUTH == "1"
   ? Authenticated
@@ -104,8 +113,8 @@ import * as Theme from "../theme.ts";
     <AuthBarrier>
       <!-- if the screen is big enough we use a two panel layout -->
       <div class="content-container">
-        {(includeNavBar ?? true) ? <MobileNavBar class="mobile-layout-nav"/> : ""}
-        {(includeNavBar ?? true) ? <div class="left desktop-layout-nav"><LeftNavBar/></div> : ""}
+        {(includeNavBar ?? true) ? <MobileNavBar class="mobile-layout-nav" {currentSlug}/> : ""}
+        {(includeNavBar ?? true) ? <div class="left desktop-layout-nav"><LeftNavBar {currentSlug}/></div> : ""}
         <div class="content">
           <slot/>
         </div>
