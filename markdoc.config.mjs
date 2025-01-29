@@ -14,6 +14,14 @@ export default defineMarkdocConfig({
       },
       render: component('./src/components/Figure.astro'),
     },
+    video: {
+      attributes: {
+        src: { type: String, required: false },
+        width: { type: String, required: false },
+        height: { type: String, required: false },
+      },
+      render: component('./src/components/Video.astro'),
+    },
     image: {
       attributes: {
         ...nodes.image.attributes,

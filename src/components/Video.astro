@@ -1,0 +1,17 @@
+---
+interface Props {
+  src: string;
+  width: number;
+  height: number;
+}
+const { src, width, height } = Astro.props;
+---
+<style define:vars={{ width, height }}>
+video {
+  height: var(--height);
+  width: var(--width);
+}
+</style>
+<video autoplay muted="">
+  <source {src}/>
+</video>
