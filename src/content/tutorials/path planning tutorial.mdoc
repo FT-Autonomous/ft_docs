@@ -22,7 +22,6 @@ With the simulator running, open another terminal and navigate to the `~/ft` fol
 ros2 topic list -t 
 ```
 
-What is a ROS topic? ROS topics are like TV channels carrying a stream of messages. For path planning, you will listen on a stream of cone data and output a stream containing waypoints for the car to follow.
 
 {% figure src="https://docs.ros.org/en/jazzy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif" height="200px" /%}
 
@@ -37,7 +36,7 @@ ros2 interface show eufs_msgs/msg/ConeArrayWithCovariance
 With this information, we can start writing python code to interface with the ROS topics. The first step is to create a new ROS2 python project to store the code. This can be done using the following command (make sure that you run this in the \~/ft folder):
 
 ```bash
-gh repo clone FT-Autonomous/Path-Planning-2023-2024 ft_path_planning
+gh repo clone FT-Autonomous/ft_euclid ft_path_planning
 cd ft_path_planning
 git switch ConeMatcher
 ```
