@@ -67,6 +67,14 @@ git clone --recuse-submodules git@github.com:FT-Autonomous/FT-FSAI-23
 
 If you get an error complaining that the repository doesn’t exist, you may not be a member of the GitHub organisation, so ask somebody to add you.
 
+If you get an error about missing submodules(EX: slam_tools) ensure they are properly installed by running the following commands.
+
+```bash
+cd FT-FSAI-23
+git submodule init
+git submodule update
+```
+
 ### Getting Set Up for ROS Development
 
 The next step is to compile all of our code along with the simulator code. You can do this with the following command.
