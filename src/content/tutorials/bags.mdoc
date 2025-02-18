@@ -32,3 +32,10 @@ To cut the bag use the following command:
 ros2 bag cut ~cleavon/Desktop/Bags/second_trackd --start 60 --duration 180 --output second_trackd_cut
 ```
 
+To visualize the bag, run `rviz2` in a new terminal and add all appropriate topics (see [The ROS2 Visualisation Stack](https://docs.formulatrinity.ie/rviz/))
+
+If none of the visual feeds show up make sure you change the camera to "odom" and run the following command in a different terminal for tf2 reasons:
+
+```
+ros2 run ft_system pose_transform_publisher
+```
