@@ -42,6 +42,39 @@ colcon build --symlink-install --packages-up-to PACKAGE_NAME
 
 Other pacakge selection commands are documented in [the colcon docs](https://colcon.readthedocs.io/en/released/reference/package-selection-arguments.html).
 
+### Exporting Python Packages
+
+If you structure your python project as follows:
+
+```
+📄 setup.py
+📂 ft_module
+└📄 __init__.py
+└📂 sub_module.py
+ └📄 __init__.py
+ └📄 sub_sub_module.py
+```
+
+When you build your package using colcon and attempt to execute the following python code, you may get a `ModuleNotFound` error:
+
+```
+import ft_module.sub_module.sub_sub_module
+```
+
+The reason behind this is that by default, ROS2 configures the project to only export the top level package. The culprit is in the `setup(packages=[...])` component of the `setup.py` script. In our case, this section might look something like this:
+
+```python
+setup(packages=["ft_module"], ...)
+```
+
+The fix is to use the `setuptools.find_packages()` utility, wich will recursively look for all submodules as follows:
+
+```python
+from setuptools import setup, find_packages
+...
+setup(packages=find_packages(), ...)
+```
+
 ## The ROS2 Command Line Interface (CLI)
 
 Here are some useful ROS2 CLI commands.
