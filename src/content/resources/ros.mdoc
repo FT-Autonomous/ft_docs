@@ -32,6 +32,16 @@ colcon build --symlink-install
 . install/setup.bash
 ```
 
+### Building Specific Packages
+
+The `--packages-up-to` argument selects a package build, and also informs colcon to build all of the packages that it depends on. It can be used as follows:
+
+```
+colcon build --symlink-install --packages-up-to PACKAGE_NAME
+```
+
+Other pacakge selection commands are documented in [the colcon docs](https://colcon.readthedocs.io/en/released/reference/package-selection-arguments.html).
+
 ## The ROS2 Command Line Interface (CLI)
 
 Here are some useful ROS2 CLI commands.
