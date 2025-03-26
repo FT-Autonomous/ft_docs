@@ -1,5 +1,5 @@
 ---
-title: ROS Path Planning Tutorial
+title: Path Planning Tutorial (Getting Started on ROS) (Kind of Deprecated)
 ---
 
 ## ROS Path Planning Tutorial
@@ -38,7 +38,6 @@ With this information, we can start writing python code to interface with the RO
 ```bash
 gh repo clone FT-Autonomous/ft_euclid ft_path_planning
 cd ft_path_planning
-git switch ConeMatcher
 ```
 
 This clones the path planning repository and switches to the ConeMatcher branch, which is the main one in use at present. An example of the most basic ROS2 node is the following, which should be placed in the `~/ft/ft_path_planning/ConeMatcher/ros.py` file.
@@ -74,7 +73,7 @@ console_scripts = [
 This will enable you to run the command `ros2 run ft_path_planning ros` in order to start the node. Before doing this, you need to compile the project again using the following command (make sure that you execute this in your workspace, which is probably \~/ft):
 
 ```bash
-colcon build --symlink-install --packages-select ft_path_planning
+colcon build --symlink-install --packages-up-to ft_path_planning
 ```
 
 Once you have done this, re-import ROS using the following command (this is necessary as we added new files as opposed to just modifying existing files):
