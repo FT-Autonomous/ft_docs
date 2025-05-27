@@ -1,14 +1,15 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
+import * as Context from "../content/departments/config.ts";
+import Layout from "../layouts/Layout.astro";
+import SearchBar from "../components/SearchBar.jsx";
 
 const tutorialEntries = await getCollection('tutorials');
 const equipmentEntries = await getCollection('equipment');
 const resourceEntries = await getCollection('resources');
 const guidelineEntries = await getCollection('guidelines');
 
-import * as Context from "../content/departments/config.ts";
 const departmentEntries = (await Promise.all(Context.slugOrder.map(e => getEntry('departments', e)))).flatMap(f => f ? [f] : []);
-import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Formula Trinity Autonomous Wiki" includeNavBar={false}>
@@ -29,7 +30,7 @@ import Layout from "../layouts/Layout.astro";
     }
 
     ul li a:hover {
-      color: var(--linkHoverColor); /* Use the new hover color */
+      color: var(--linkHoverColor);
     }
 
     .section {
@@ -54,27 +55,54 @@ import Layout from "../layouts/Layout.astro";
 
     .system-diagram object {
       width: 100%;
-      max-width: 600px; /* Set the maximum width for the system diagram */
-      height: auto; /* Maintain aspect ratio */
-      margin: 0 auto; /* Center the diagram */
+      max-width: 600px;
+      height: auto;
+      margin: 0 auto;
     }
   </style>
 
-  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
+  <div style={{ paddingLeft: "15px", paddingRight: "15px" }}>
+    <SearchBar client:visible />
+
     <div>
       <h2>Departments</h2>
-      <ul>{departmentEntries.map(e => (<li><a href={`/${e.slug}`}>{e.data.title}</a></li>))}</ul>
+      <ul>
+        {departmentEntries.map(e => (
+          <li><a href={`/departments/${e.slug}`}>{e.data.title}</a></li>
+        ))}
+      </ul>
     </div>
+
     <div>
       <h2>Tutorials</h2>
-      <ul>{tutorialEntries.map(tutorial => (<li> <a href={`/${tutorial.slug}`}>{tutorial.data.title}</a> </li>))} </ul>
+      <ul>
+        {tutorialEntries.map(t => (
+          <li><a href={`/tutorials/${t.slug}`}>{t.data.title}</a></li>
+        ))}
+      </ul>
+
       <h2>Equipment</h2>
-      <ul>{equipmentEntries.map(equipment => (<li> <a href={`/${equipment.slug}`}>{equipment.data.title}</a> </li>))} </ul>
+      <ul>
+        {equipmentEntries.map(e => (
+          <li><a href={`/equipment/${e.slug}`}>{e.data.title}</a></li>
+        ))}
+      </ul>
+
       <h2>Resources</h2>
-      <ul>{resourceEntries.map(resource => (<li> <a href={`/${resource.slug}`}>{resource.data.title}</a> </li>))} </ul>
+      <ul>
+        {resourceEntries.map(r => (
+          <li><a href={`/resources/${r.slug}`}>{r.data.title}</a></li>
+        ))}
+      </ul>
+
       <h2>Guidelines</h2>
-      <ul>{guidelineEntries.map(guideline => (<li> <a href={`/${guideline.slug}`}>{guideline.data.title}</a> </li>))} </ul>
+      <ul>
+        {guidelineEntries.map(g => (
+          <li><a href={`/guidelines/${g.slug}`}>{g.data.title}</a></li>
+        ))}
+      </ul>
     </div>
+
     <h2>System Diagram</h2>
     <div class="system-diagram">
       <object type="image/svg+xml" data="/system diagram.svg"></object>
