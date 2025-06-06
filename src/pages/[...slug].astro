@@ -1,40 +1,57 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getCollection } from 'astro:content';
-import config from "../../astro.config.mjs";
+import { getCollection, getEntry } from "astro:content";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-  const collection = [
-    ...await getCollection('departments'),
-    ...await getCollection('tutorials'),
-    ...await getCollection('equipment'),
-    ...await getCollection('resources'),
-    ...await getCollection('guidelines'),
-  ];
-  return collection.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  const collections = ["departments", "tutorials", "equipment", "resources", "guidelines"];
+  const paths = [];
+
+  for (const name of collections) {
+    const entries = await getCollection(name);
+    for (const entry of entries) {
+      // ✅ entry.slug is like 'zed2', we pair it with its collection name
+      paths.push({
+        params: { slug: `${name}/${entry.slug}` }, // MUST be string here
+        props: { collection: name, slug: entry.slug, entry },
+      });
+    }
+  }
+
+  return paths;
 }
 
-const collection = [
-  ...await getCollection('departments'),
-  ...await getCollection('tutorials')
-];
+const fullSlug = Astro.params.slug; // string like 'equipment/zed2'
+const [collectionName, ...rest] = fullSlug.split("/");
+const slug = rest.join("/");
 
-let entry = config.output === "static"
-  ? Astro.props.entry
-  : collection.find(entry => entry.slug == Astro.params.slug);
+let entry;
 
-const { data: { description, title } } = entry ?? { data: { description: 'Not Found', title: 'Not Found' } };
-const { Content } = entry !== undefined ? await entry.render() : { Content : '' };
+if (import.meta.env.SSR) {
+  entry = await getEntry(collectionName, slug);
+} else {
+  entry = Astro.props.entry;
+}
+
+const title = entry?.data.title ?? "Not Found";
+const { Content } = entry ? await entry.render() : { Content: () => null };
 ---
-<Layout title={title} includeNavBar={true} currentSlug={Astro.params.slug}>
-  <div style={{paddingLeft: "15px", paddingRight: "15px"}}>
-    <Content />
-    <footer><a href="/">Back Home</a></footer>
-    <br>
-  </div>
-</Layout>
+
+{entry ? (
+  <Layout title={title} includeNavBar currentSlug={`${collectionName}/${slug}`}>
+    <div style={{ paddingLeft: "15px", paddingRight: "15px" }}>
+      <Content />
+      <footer style={{ marginTop: "2rem" }}>
+        <a href="/">← Back Home</a>
+      </footer>
+    </div>
+  </Layout>
+) : (
+  <Layout title="Not Found" includeNavBar>
+    <div style={{ padding: "2rem" }}>
+      <h1>404: Not Found</h1>
+      <a href="/">← Back Home</a>
+    </div>
+  </Layout>
+)}
