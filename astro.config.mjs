@@ -1,33 +1,32 @@
+// @ts-check
 import { defineConfig } from 'astro/config';
 import { dark } from '@clerk/themes';
 import markdoc from '@astrojs/markdoc';
 import clerk from '@clerk/astro';
 import node from '@astrojs/node';
-import preact from '@astrojs/preact'; // ✅ you already added this
 
+// https://astro.build/config
 export default defineConfig({
   integrations: [
     markdoc(),
     clerk({
-      appearance: { baseTheme: dark },
+      appearance: {
+        baseTheme: dark,
+      },
     }),
-    preact()
   ],
-  adapter: node({ mode: 'standalone' }),
+  adapter: node({ mode: "standalone" }),
   site: `https://${process.env.FT_DOCS_HOST}`,
   base: '/',
   output: process.env.FT_DOCS_FORCE_AUTH == '1' ? 'server' : 'static',
   trailingSlash: 'ignore',
-
-  // ✅ ADD THIS TO MAKE JSX CONFIG WORK
   vite: {
-    esbuild: {
-      jsx: 'automatic',
-      jsxImportSource: 'preact'
-    },
     build: {
       rollupOptions: {
-        external: ['fsevents']
+        external: [
+          // https://stackoverflow.com/questions/71552229/vite-how-do-i-use-a-wildcard-in-rollupjs-build-rollupoptions-external
+          "fsevents"
+        ]
       }
     }
   }
