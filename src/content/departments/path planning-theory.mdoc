@@ -40,7 +40,7 @@ the final path that, i.e. adjust and optimise the generated
 based on objective parameters and constraints, ensuring
 continuity and smoothness.
 
-- Arc-Centre Cone Virtualization (ACCV) (To be implmented) The ACCV solution involves virtualising cones in the general area where
+- Arc-Centre Cone Virtualization (ACCV). The ACCV solution involves virtualising cones in the general area where
 they should be on the track when multiple cones are missed
 in close proximity. When the ”Cone Matcher” finds such
 a condition, the unmatched cones are used to roughly
@@ -69,3 +69,29 @@ tually, the aim for path planning is to be able to produce an
 optimised ”raceline” to follow over a time horizon in the laps
 subsequent to the first lap; taking in a global map and the
 ”centreline” as inputs.
+
+### Arc Centre Cone Virtualisation (ACCV) 
+
+*ACCV is a technique used to estimate the position of missing perception cones.*
+
+#### Requirements for ACCV 
+
+- Minimum of three cones per side 
+- Both sides of cones must be non-collinear (threshold defined in utils)
+- Number of detected missing cones is below 80% 
+
+#### Our approach 
+
+The majority of this functionality is implemented in Utils/track.py and Utils/accv.py with some utility functions implemented in Utils/mathUtils.py. 
+
+- Calculated average distance between cones for both sides
+- Computed threshold using 25th and 75th percentile of average distances 
+- Using average distance threshold, insert "PLACEHOLDER" cone to indicate a missing cone.
+- If the proportion of detected cones is sufficinet (above 80%), bypass ACCV. 
+- Using the check_curviness() function in mathUtils, collinearity is checked. If below a threshold, a simple linear mapping is used. 
+- Using the side with more detected cones, the missing cones are virtualised using ACCV.
+- The centre and radius of the circle are calculated using a minimum of three cones using the _best_fit_circle() function. 
+- The ACCV function itself maps each detected cone to the undetected side using the angle it creates with the center. If detected cones are on the outer side, virtual cones are placed on the inner side (radius - path_width). Otherwise, virtual cones are placed on the outer side (radius + path_width).
+- These virtualised cones along with the original detected cones are then used in the centrepoint calculations. 
+
+
