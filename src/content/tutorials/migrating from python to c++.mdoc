@@ -2,6 +2,8 @@
 title: Migrating from Python to C++ in ROS2
 ---
 
+## Migrating from Python to C++ in ROS2
+
 Authored by Jake Casserly
 
 ### Note:
@@ -79,6 +81,30 @@ If we instead use:
 We will end up ignoring the CMakeLists.txt and just building the package to work with python code
 
 ### 3. pure_pursuit.cpp
+
+#### Imports:
+
+The first part of the C++ code is the includes, or in python terms, the imports
+
+The imports for the C++ file include some of the more standard imports but also some imports unique to ROS2
+
+For example take these two imports:
+
+```
+#include "std_msgs/msg/string.hpp"
+#include "ft_msgs/msg/control_request.hpp"
+```
+
+The first is a header file for a standard ROS2 message type, standard messages. The second is one of our own custom message header files.
+
+Whats interesting is that you will probably have some trouble finding the header file for these imports. The reason being is that they are actually auto-generated as part of the CMakeLists.txt file itself.
+
+The custom header file for the second include is generated when the package is built as commanded by the ```rosidl_generate_interfaces```.
+
+This is the same for the 3 other EUFS messages. The rest of the imports are more generic ROS2 imports: geometry_msgs for keeping track of the models (the car) co-ordinates and yaw.
+
+
+#### Syntax:
 
 The biggest difference that can be seen between the Python code and the C++ code is the type declerations. The types are quite long winded but overall are necessary.
 For those who have programmed in C and C++ before, most of the conversions from python to C++ seem quite obvious but the less obvious conversions are generally the ones that deal with the ROS2 interface.
