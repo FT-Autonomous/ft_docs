@@ -30,8 +30,10 @@ If you are using a shared platform such as the Jetson somebody has probably comp
 As prerequisites, in addition `ros-humble desktop`, you must install the fllowing packages:
 
 ```
-ros-humble-nmea-msgs ros-humble-geographic-msgs ros-humble-diagnostic-updater ros-humble-robot-localization ros-humble-xacro
+ros-humble-nmea-msgs ros-humble-geographic-msgs ros-humble-diagnostic-updater ros-humble-robot-localization ros-humble-xacro ros-humble-zed-msgs
 ```
+
+**Note**: `ros-humble-zed-msgs` is new for ROS2 humble. If you are running an older version of ROS2 you will have to compile them from source from the [ZED2 Interfaces Repo](https://github.com/stereolabs/zed-ros2-interfaces)
 
 Clone the github repository [ZED2 ROS Wrapper](https://github.com/stereolabs/zed-ros2-wrapper) as follows:
 
