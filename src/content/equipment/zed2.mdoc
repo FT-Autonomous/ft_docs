@@ -33,12 +33,11 @@ As prerequisites, in addition `ros-humble desktop`, you must install the fllowin
 ros-humble-nmea-msgs ros-humble-geographic-msgs ros-humble-diagnostic-updater ros-humble-robot-localization ros-humble-xacro ros-humble-zed-msgs
 ```
 
-**Note**: `ros-humble-zed-msgs` is new for ROS2 humble. If you are running an older version of ROS2 you will have to compile them from source from the [ZED2 Interfaces Repo](https://github.com/stereolabs/zed-ros2-interfaces)
-
-Clone the github repository [ZED2 ROS Wrapper](https://github.com/stereolabs/zed-ros2-wrapper) as follows:
+Clone the github repository [ZED2 ROS Wrapper](https://github.com/stereolabs/zed-ros2-wrapper) and the [ZED2 Interfaces Repo](https://github.com/stereolabs/zed-ros2-interfaces):
 
 ```
 git clone --recurse-submodules https://github.com/stereolabs/zed-ros2-wrapper
+git clone --recurse-submodules https://github.com/stereolabs/zed-ros2-interfaces
 ```
 
 **Note**: If you are still using ROS2 galactic, comment out the lines in `zed_camera_component.cpp` that trigger an error if the ROS version is not `IRON` or `HUMBLE` or `FOXY`. As of \[2024-01-21 Sun\], the main branch on github compiles fine under galactic. Otherwise, you can ignore this disclaimer.
