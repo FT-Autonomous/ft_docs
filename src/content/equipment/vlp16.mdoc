@@ -48,8 +48,6 @@ There may already be a "Velodyne" ethernet connection in NetworkManager, if so, 
 
 If not, you will need to create a new connection, by clicking the `+` button in the bottom left corner. Select `Ethernet` from the dropdown menu and click `Create`. Name the connection as "Velodyne" and then navigate to the "IPv4 Settings" tab. Now we need to add the addresses for it by clicking `Add`. Give the velodyne static ip as `192.168.1.200`. Set the subnet mask as `255.255.255.0` and the gateway as `255.255.255.255`.
 
-Once the network has been set up, the Velodyne can be configured in a web console made available by typing the IP address `192.168.1.201` on a web browser. (yes, this is different from the IP address assigned to the network interface).
-
 #### Activating the Velodyne Network
 
 To activate the Velodyne network configuration, run the command.
@@ -59,6 +57,10 @@ nmcli connection up Velodyne
 ```
 
 Run the command `ip -br a` to verify that the network interface corresponding to the velodyne is `UP` and it should be color coded green.
+
+#### Configuring the Velodyne via the Web Console
+
+Once the network has been set up, the Velodyne can be configured in a web console made available by typing the IP address `192.168.1.201` on a web browser. (yes, this is different from the IP address assigned to the network interface).
 
 #### Troubleshooting
 
