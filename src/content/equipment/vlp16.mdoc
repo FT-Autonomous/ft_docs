@@ -72,7 +72,13 @@ You can tweak the `rpm` parameter to `1200.0` to get the LiDAR to publish messag
 
 #### Troubleshooting
 
+##### Power
+
 First, verify that the velodyne is actually turned on. You should hear a dim continuous hum from the velodyne coming from the internal motor that spins the laser. Additionally, when you place your hand on the velodyne you should feel a continous vibration.
+
+You may run into a situation where the green power indicator on the VLP-16 is on but the device is not spinning. One possible cause is an unstable mounting platform. If the VLP-16 tries to spin up the motors and in doing so rotates the chassis of the sensor itself multiple times, it will not start up for mechanical safety reasons.
+
+##### Networking
 
 If the network interface is down most of the time but it is spinning, you may have a hardware fault. One of the most frequent issues we have with out LiDAR is that the wires inside the interface box come loose. You can open the interface box and check the wires to see if they are connected properly. if they are not connected properly, you can try reconnecting them. Make sure the power is off before you do this!.
 
