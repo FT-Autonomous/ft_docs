@@ -15,7 +15,7 @@ Some are lucky in life and never have to debug TF2 issues. Others do not have th
 ### Exporting The Tree to a PDF
 
 ```
-ros2 run tf2_ros view_frames
+ros2 run tf2_tools view_frames
 ```
 
 You can use this output to diagnose cases where your transforms tree is disconnected in cases where it shouldn't be.
@@ -38,11 +38,13 @@ You can then run it via:
 ros2 run rqt_tf_tree rqt_tf_tree
 ```
 
-## A Note on Time
+## TF2 Only Matches Transforms to Exact Timestamps
 
 Consider a scenario where we have a coordinate frame named `odom` which is anchored at some point on the race track. For simplicity, we can consider this to be the start of the circuit. No imagine a scenario where at time step `t`, we have said that our vehicle (represented by the `chassis` frame) is 5 meters away from the origin at an angle of 45 degrees. Now, let's say at time step `t + 0.0001`, we want to know the transform from the `odom` frame to the `chassis` frame. Does it make sense to simply use the previous transform, since it's within some threshold?
 
 TF2 would beg to differ. In TF2, we explicitly **cannot** use transforms on data unless the transform and the data have exactly the same timestamp.
+
+### Why This Makes Sense
 
 This is possibly related to how you would certainly not want to make a predefined threshold based on something like a human intuition of when two events are close to each other, seeing as ROS2 topics and transforms allow time stamping at a precision down to the nanosecond. For robotics operating on small timescales (possibly using real time operating systems), interpolation on a human scale would be incoherent and cause chaos. One might then ask why ROS2 doesn't let us just specify the threshold ourselves. Not actually sure about this &#x2013; perhaps it would become too complex having to specify interpolation thresholds for each different kind of data. The implication of all this is once again that we have to make sure that all data points (such as point cloud data or camera data) that we want to transform have an associated transform tree whose time stamp is equal to the time stamp in that data point. The community probably deemed this to be acceptable at some point.
 
@@ -54,4 +56,8 @@ We rig our own transform tree (though there is probably a package out there that
 
 Static transform publishers are used to denote aspects of the transform tree that always stay the same, such as between two parts of a (very) rigid body. On the ZED2 camera, the transform from the ZED2 base frame to the ZED2 left camera frame is usually done using a static transform.
 
-Dynamic transform publishers are used to denote aspects of the transform tree that change with time. In the case of our code, the main dynamic transform is the `odom` to `chassis` transform frame which describes where the vehicle is relative to starting location on the track using information gleaned from state estimation. The node that publishes these transforms is called the `pose_transform_publisher` and is present in the `ft_system` package.
+Dynamic transform publishers are used to denote aspects of the transform tree that change with time. In the case of our code, the main dynamic transform is the `odom` to `chassis` transform frame which describes where the vehicle is relative to starting location on the track using information gleaned from state estimation. You can run teh node that publishes these transforms as follows.
+
+```
+ros2 run ft_system pose_transform_publisher
+```
